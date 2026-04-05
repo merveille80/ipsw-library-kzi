@@ -10,8 +10,8 @@ const FAMILY_META = {
   vision: { label: "Vision", image: "assets/devices/vision.webp" },
   appletv: { label: "Apple TV", image: "assets/devices/appletv.webp" },
   homepod: { label: "HomePod", image: "assets/devices/homepod.webp" },
-  ipod: { label: "iPod touch", image: "assets/devices/ipod.webp?v=2" },
-  watch: { label: "Apple Watch", image: "assets/devices/watch.webp?v=2" },
+  ipod: { label: "iPod touch", image: "assets/devices/ipod_v2.webp" },
+  watch: { label: "Apple Watch", image: "assets/devices/watch_v2.webp" },
   other: { label: "Autres", image: "" },
   all: { label: "Tous les appareils", image: "" },
 };
