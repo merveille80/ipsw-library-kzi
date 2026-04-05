@@ -1,7 +1,4 @@
-const API_BASE =
-  location.hostname === "localhost" || location.hostname === "127.0.0.1"
-    ? "https://api.ipsw.me/v4"
-    : "/api";
+const API_BASE = "https://api.ipsw.me/v4";
 const INITIAL_VISIBLE_DEVICES = 60;
 const DEVICES_INCREMENT = 40;
 const INITIAL_VISIBLE_FIRMWARES = 28;
