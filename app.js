@@ -738,7 +738,17 @@ async function fetchJson(url, timeout = 15000) {
     throw new Error(`${response.status} ${response.statusText} ${body}`.trim());
   }
 
+  const contentType = response.headers.get("content-type");
+  if (contentType && !contentType.includes("application/json")) {
+    const text = await response.text();
+    if (text.trim().startsWith("<!doctype")) {
+      throw new Error("L'API a renvoyé une page HTML au lieu de JSON. Vérifie tes redirections Cloudflare.");
+    }
+    throw new Error(`Réponse non-JSON reçue: ${contentType}`);
+  }
+
   return response.json();
+
 }
 
 function formatBytes(bytes) {
