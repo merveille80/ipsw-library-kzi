@@ -153,7 +153,28 @@ textarea {
 .topbar__actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+}
+
+.lang-select {
+  appearance: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  height: 34px;
+  padding: 0 30px 0 12px;
+  background-color: var(--surface);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m3 5 3 3 3-3'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.lang-select:hover {
+  border-color: var(--blue);
 }
 
 .dot {
@@ -889,38 +910,71 @@ body[data-theme="dark"] .wizard-step--active {
 
 .device-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: linear-gradient(180deg, var(--surface-strong), var(--surface));
-  padding: 12px 12px 13px;
-  text-align: left;
+  padding: 20px 16px;
   cursor: pointer;
   transition: 0.24s ease;
+  gap: 12px;
 }
 
 .device-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 20px rgba(16, 20, 31, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 14px 24px rgba(16, 20, 31, 0.12);
+  border-color: rgba(0, 113, 227, 0.4);
 }
 
 .device-card.is-selected {
-  border-color: rgba(0, 113, 227, 0.42);
+  border-color: var(--blue);
+  background: rgba(0, 113, 227, 0.05);
   box-shadow: inset 0 0 0 1px rgba(0, 113, 227, 0.25), 0 16px 28px rgba(0, 113, 227, 0.16);
+}
+
+.device-card__img {
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.device-card:hover .device-card__img {
+  transform: scale(1.08);
+}
+
+.device-card__img img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12));
+}
+
+.device-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .device-card__name {
   margin: 0;
-  font-size: 0.98rem;
-  line-height: 1.32;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.3;
   color: var(--text);
 }
 
 .device-card__id {
-  margin: 6px 0 0;
+  margin: 0;
   color: var(--text-soft);
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
 }
 
 .load-more {

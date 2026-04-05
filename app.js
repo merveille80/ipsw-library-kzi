@@ -7,14 +7,14 @@ const DEVICES_INCREMENT = 40;
 const INITIAL_VISIBLE_FIRMWARES = 28;
 
 const FAMILY_META = {
-  iphone: { label: "iPhone", image: "https://ipsw.me/assets/devices/iPhone17,1.png" },
-  ipad: { label: "iPad", image: "https://ipsw.me/assets/devices/iPad15,7.png" },
-  mac: { label: "Mac", image: "https://ipsw.me/assets/devices/Mac16,13.png" },
-  vision: { label: "Vision", image: "https://ipsw.me/assets/devices/RealityDevice14,1.png" },
-  appletv: { label: "Apple TV", image: "https://ipsw.me/assets/devices/AppleTV6,2.png" },
-  homepod: { label: "HomePod", image: "https://ipsw.me/assets/devices/AudioAccessory5,1.png" },
-  ipod: { label: "iPod touch", image: "https://ipsw.me/assets/devices/iPod9,1.png" },
-  watch: { label: "Apple Watch", image: "https://ipsw.me/assets/devices/Watch5,4.png" },
+  iphone: { label: "iPhone", image: "assets/devices/iphone.webp" },
+  ipad: { label: "iPad", image: "assets/devices/ipad.webp" },
+  mac: { label: "Mac", image: "assets/devices/mac.webp" },
+  vision: { label: "Vision", image: "assets/devices/vision.webp" },
+  appletv: { label: "Apple TV", image: "assets/devices/appletv.webp" },
+  homepod: { label: "HomePod", image: "assets/devices/homepod.webp" },
+  ipod: { label: "iPod touch", image: "assets/devices/ipod.webp" },
+  watch: { label: "Apple Watch", image: "assets/devices/watch.webp" },
   other: { label: "Autres", image: "" },
   all: { label: "Tous les appareils", image: "" },
 };
@@ -43,6 +43,84 @@ const state = {
   visibleDevices: INITIAL_VISIBLE_DEVICES,
   showAllFirmwares: false,
   theme: "light",
+  lang: "fr",
+};
+
+const TRANSLATIONS = {
+  fr: {
+    hero_title: 'Accède au <span class="hero__title-gradient">firmware Apple parfait</span> en quelques clics.',
+    hero_subtitle: 'Navigation fluide par dossiers successifs, vérification de signature et téléchargement direct des fichiers système.',
+    hero_explore: 'Commencer maintenant',
+    hero_products: 'Voir les produits',
+    search_placeholder: 'Rechercher un modèle ou un identifier (ex: iPhone16,2)',
+    view_title_default: 'Produits Apple',
+    step_1_scope: 'Étape 1: ouvre un dossier produit',
+    step_1_status: 'Étape 1: choisis une catégorie.',
+    step_2_scope: 'Étape 2: sélectionne un modèle',
+    step_2_status: 'Étape 2: ouvre un modèle pour voir ses fichiers système.',
+    step_3_scope: 'Étape 3: sélectionne et télécharge le fichier',
+    step_3_status: 'Type de firmware: ',
+    devices_indexed: 'modèles indexés',
+    no_models: 'Aucun modèle dans ce dossier.',
+    loading_firmwares: 'Récupération des fichiers système en cours.',
+    loading: 'Chargement...',
+    version: 'Version',
+    build: 'Build',
+    date: 'Date',
+    size: 'Taille',
+    signature: 'Signature',
+    action: 'Action',
+    download: 'Télécharger',
+    show_more: 'Afficher plus',
+    show_all: 'Afficher tous les fichiers',
+    show_less: 'Afficher moins',
+    empty_firmwares: 'Aucune version disponible pour cet appareil.',
+    seo_title: 'Site pour télécharger les systèmes iPhone et firmwares Apple',
+    seo_desc: 'IPSW Library Kzi te permet de trouver rapidement le bon firmware Apple officiel. Recherche par produit, modèle, version, build et signature pour télécharger le bon fichier IPSW ou OTA.',
+    seo_card_1_title: 'iPhone et iOS',
+    seo_card_1_desc: 'Télécharge les fichiers système iPhone (IPSW) et retrouve les versions iOS stables ou anciennes, modèle par modèle.',
+    seo_card_2_title: 'iPad, Mac, Watch, TV',
+    seo_card_2_desc: 'Accède aussi aux firmwares iPadOS, macOS, watchOS et tvOS dans une navigation simple en dossiers successifs.',
+    seo_card_3_title: 'IPSW et OTA officiels',
+    seo_card_3_desc: 'Bascule en un clic entre IPSW et OTA, vérifie le statut de signature et lance le téléchargement direct.',
+  },
+  en: {
+    hero_title: 'Access the <span class="hero__title-gradient">perfect Apple firmware</span> in a few clicks.',
+    hero_subtitle: 'Fluid navigation through successive folders, signature verification, and direct download of system files.',
+    hero_explore: 'Start now',
+    hero_products: 'See products',
+    search_placeholder: 'Search for a model or identifier (ex: iPhone16,2)',
+    view_title_default: 'Apple Products',
+    step_1_scope: 'Step 1: open a product folder',
+    step_1_status: 'Step 1: choose a category.',
+    step_2_scope: 'Step 2: select a model',
+    step_2_status: 'Step 2: open a model to see its system files.',
+    step_3_scope: 'Step 3: select and download the file',
+    step_3_status: 'Firmware type: ',
+    devices_indexed: 'indexed models',
+    no_models: 'No models in this folder.',
+    loading_firmwares: 'Retrieving system files...',
+    loading: 'Loading...',
+    version: 'Version',
+    build: 'Build',
+    date: 'Date',
+    size: 'Size',
+    signature: 'Signature',
+    action: 'Action',
+    download: 'Download',
+    show_more: 'Show more',
+    show_all: 'Show all files',
+    show_less: 'Show less',
+    empty_firmwares: 'No versions available for this device.',
+    seo_title: 'Site to download iPhone systems and Apple firmwares',
+    seo_desc: 'IPSW Library Kzi allows you to quickly find the correct official Apple firmware. Search by product, model, version, build, and signature to download the right IPSW or OTA file.',
+    seo_card_1_title: 'iPhone and iOS',
+    seo_card_1_desc: 'Download iPhone system files (IPSW) and find stable or older iOS versions, model by model.',
+    seo_card_2_title: 'iPad, Mac, Watch, TV',
+    seo_card_2_desc: 'Also access iPadOS, macOS, watchOS, and tvOS firmwares in a simple successive folder navigation.',
+    seo_card_3_title: 'Official IPSW and OTA',
+    seo_card_3_desc: 'Switch between IPSW and OTA in one click, check signature status, and start direct download.',
+  },
 };
 
 const homeBrandBtn = document.getElementById("homeBrandBtn");
@@ -52,8 +130,7 @@ const jumpProductsBtn = document.getElementById("jumpProductsBtn");
 const heroQuickProducts = document.getElementById("heroQuickProducts");
 const searchInput = document.getElementById("searchInput");
 const typeButtons = Array.from(document.querySelectorAll(".type-toggle__btn"));
-const backBtn = document.getElementById("backBtn");
-const breadcrumbs = document.getElementById("breadcrumbs");
+const langSelect = document.getElementById("langSelect");
 const familyStatus = document.getElementById("familyStatus");
 const viewTitle = document.getElementById("viewTitle");
 const deviceScope = document.getElementById("deviceScope");
@@ -71,13 +148,13 @@ const deviceIdentifier = document.getElementById("deviceIdentifier");
 const firmwareCount = document.getElementById("firmwareCount");
 const firmwareTableBody = document.getElementById("firmwareTableBody");
 const toggleRowsBtn = document.getElementById("toggleRowsBtn");
-const wizardSteps = Array.from(document.querySelectorAll(".wizard-step"));
 const explorerPanel = document.getElementById("explorerPanel");
 
 init();
 
 async function init() {
   applyInitialTheme();
+  applyInitialLanguage();
   applyInitialQueryFromUrl();
   bindEvents();
   renderFamilySkeleton();
@@ -165,49 +242,9 @@ function bindEvents() {
     });
   });
 
-  if (backBtn) {
-    backBtn.addEventListener("click", () => {
-      if (state.currentStep === 3) {
-        state.currentStep = 2;
-        renderAll();
-        return;
-      }
-
-      if (state.currentStep === 2) {
-        state.currentStep = 1;
-        state.family = "";
-        state.query = "";
-        searchInput.value = "";
-        state.visibleDevices = INITIAL_VISIBLE_DEVICES;
-        state.selectedIdentifier = "";
-        state.selectedDetails = null;
-        renderAll();
-      }
-    });
-  }
-
-  if (breadcrumbs) {
-    breadcrumbs.addEventListener("click", (event) => {
-      const btn = event.target.closest("button[data-step]");
-      if (!btn) return;
-      const step = Number(btn.dataset.step);
-
-      if (step === 1) {
-        state.currentStep = 1;
-        state.family = "";
-        state.query = "";
-        searchInput.value = "";
-        state.visibleDevices = INITIAL_VISIBLE_DEVICES;
-        state.selectedIdentifier = "";
-        state.selectedDetails = null;
-        renderAll();
-        return;
-      }
-
-      if (step === 2 && state.family) {
-        state.currentStep = 2;
-        renderAll();
-      }
+  if (langSelect) {
+    langSelect.addEventListener("change", (event) => {
+      setLanguage(event.target.value);
     });
   }
 
@@ -342,7 +379,7 @@ function applyDeviceFilters() {
 }
 
 function renderAll() {
-  updateWizardStep();
+  applyTranslations();
   updateNavigation();
   updateExplorerView();
   updateTypeToggle();
@@ -354,19 +391,18 @@ function updateExplorerView() {
   const isStep2 = state.currentStep === 2;
   const isStep3 = state.currentStep === 3;
 
+  const dict = TRANSLATIONS[state.lang] || TRANSLATIONS.fr;
+
   categoryView.classList.toggle("hidden", !isStep1);
   modelView.classList.toggle("hidden", !isStep2);
   fileView.classList.toggle("hidden", !isStep3);
-  if (backBtn) {
-    backBtn.classList.toggle("hidden", isStep1);
-  }
 
   if (isStep1) {
-    viewTitle.textContent = "Produits Apple";
-    deviceScope.textContent = "Etape 1: ouvre un dossier produit";
-    deviceCount.textContent = `${state.devices.length} modeles indexes`;
+    viewTitle.textContent = dict.view_title_default || "Produits Apple";
+    deviceScope.textContent = dict.step_1_scope || "Etape 1: ouvre un dossier produit";
+    deviceCount.textContent = `${state.devices.length} ${dict.devices_indexed || "modeles indexes"}`;
     if (familyStatus) {
-      familyStatus.textContent = "Etape 1: choisis une categorie.";
+      familyStatus.textContent = dict.step_1_status || "Etape 1: choisis une categorie.";
     }
     renderFamilyGallery();
     return;
@@ -376,9 +412,9 @@ function updateExplorerView() {
     applyDeviceFilters();
     const familyLabel = FAMILY_META[state.family]?.label || "Appareils";
     viewTitle.textContent = `Dossier ${familyLabel}`;
-    deviceScope.textContent = "Etape 2: selectionne un modele";
+    deviceScope.textContent = dict.step_2_scope || "Etape 2: selectionne un modele";
     if (familyStatus) {
-      familyStatus.textContent = "Etape 2: ouvre un modele pour voir ses fichiers systeme.";
+      familyStatus.textContent = dict.step_2_status || "Etape 2: ouvre un modele pour voir ses fichiers systeme.";
     }
     renderDevices();
     return;
@@ -387,12 +423,12 @@ function updateExplorerView() {
   if (isStep3) {
     const title = state.selectedDetails?.name || "Fichiers systeme";
     viewTitle.textContent = `Fichiers ${title}`;
-    deviceScope.textContent = "Etape 3: selectionne et telecharge le fichier";
+    deviceScope.textContent = dict.step_3_scope || "Etape 3: selectionne et telecharge le fichier";
     if (familyStatus) {
-      familyStatus.textContent = `Type de firmware: ${state.firmwareType.toUpperCase()}`;
+      familyStatus.textContent = `${dict.step_3_status || "Type de firmware: "}${state.firmwareType.toUpperCase()}`;
     }
     if (!state.selectedDetails) {
-      deviceCount.textContent = "0 fichiers";
+      deviceCount.textContent = `0 ${dict.action || "fichiers"}`;
       firmwarePlaceholder.classList.remove("hidden");
       firmwareContent.classList.add("hidden");
       return;
@@ -402,41 +438,51 @@ function updateExplorerView() {
 }
 
 function updateNavigation() {
-  if (!breadcrumbs) return;
+  // Navigation simplified: could be used for showing/hiding back button if needed in design
+}
 
-  const familyLabel = FAMILY_META[state.family]?.label || "Produit";
-  const deviceLabel = state.selectedDetails?.identifier || state.selectedIdentifier;
-
-  const parts = [];
-  parts.push(
-    `<span class="breadcrumbs__item ${
-      state.currentStep === 1 ? "breadcrumbs__item--active" : ""
-    }"><button type="button" data-step="1">Accueil</button></span>`
-  );
-
-  if (state.currentStep >= 2) {
-    parts.push('<span class="breadcrumbs__item">/</span>');
-    if (state.currentStep === 2) {
-      parts.push(`<span class="breadcrumbs__item breadcrumbs__item--active">${escapeHtml(
-        familyLabel
-      )}</span>`);
+function applyInitialLanguage() {
+  let lang = "fr";
+  try {
+    const stored = localStorage.getItem("ipsw-lang");
+    if (stored === "en" || stored === "fr") {
+      lang = stored;
     } else {
-      parts.push(
-        `<span class="breadcrumbs__item"><button type="button" data-step="2">${escapeHtml(
-          familyLabel
-        )}</button></span>`
-      );
+      const browserLang = navigator.language.slice(0, 2);
+      if (browserLang === "en") lang = "en";
     }
+  } catch {
+    lang = "fr";
   }
+  setLanguage(lang);
+}
 
-  if (state.currentStep === 3 && deviceLabel) {
-    parts.push('<span class="breadcrumbs__item">/</span>');
-    parts.push(`<span class="breadcrumbs__item breadcrumbs__item--active">${escapeHtml(
-      deviceLabel
-    )}</span>`);
+function setLanguage(lang) {
+  state.lang = lang;
+  document.documentElement.lang = lang;
+  if (langSelect) langSelect.value = lang;
+  try {
+    localStorage.setItem("ipsw-lang", lang);
+  } catch {
+    // no-op
   }
+  applyTranslations();
+}
 
-  breadcrumbs.innerHTML = parts.join("");
+function applyTranslations() {
+  const dict = TRANSLATIONS[state.lang] || TRANSLATIONS.fr;
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    if (!dict[key]) return;
+
+    if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+      el.placeholder = dict[key];
+    } else if (el.classList.contains("hero__title")) {
+      el.innerHTML = dict[key];
+    } else {
+      el.textContent = dict[key];
+    }
+  });
 }
 
 function renderFamilySkeleton() {
@@ -453,7 +499,7 @@ function renderFamilyGallery() {
     const meta = FAMILY_META[family];
     const count = counts[family] || 0;
     const imageMarkup = meta.image
-      ? `<img class="family-card__image" src="${meta.image}" alt="${escapeHtml(meta.label)}" loading="lazy" />`
+      ? `<img class="family-card__image" src="${meta.image}" alt="${escapeHtml(meta.label)}" loading="lazy" onerror="this.onerror=null;this.src='';this.classList.add('hidden');">`
       : '<div class="family-card__fallback">+</div>';
 
     return `<button
@@ -474,7 +520,7 @@ function renderDevices() {
   const visible = state.filteredDevices.slice(0, state.visibleDevices);
 
   if (total === 0) {
-    deviceGrid.innerHTML = '<div class="empty-state">Aucun modele dans ce dossier.</div>';
+    deviceGrid.innerHTML = '<div class="empty-state" data-i18n="no_models">Aucun modele dans ce dossier.</div>';
     deviceCount.textContent = "0 / 0";
     loadMoreBtn.classList.add("hidden");
     return;
@@ -483,14 +529,23 @@ function renderDevices() {
   deviceGrid.innerHTML = visible
     .map((device, index) => {
       const selectedClass = state.selectedIdentifier === device.identifier ? "is-selected" : "";
+      const imgUrl = `https://ipsw.me/assets/devices/${device.identifier}.png`;
+      const fallbackUrl = FAMILY_META[state.family]?.image || "";
+
       return `<button
         type="button"
         class="device-card reveal ${selectedClass}"
         data-identifier="${device.identifier}"
         style="animation-delay:${Math.min(index * 14, 260)}ms"
       >
-        <p class="device-card__name">${escapeHtml(device.name)}</p>
-        <p class="device-card__id">${escapeHtml(device.identifier)}</p>
+        <div class="device-card__img">
+          <img src="${imgUrl}" alt="${escapeHtml(device.name)}" loading="lazy" 
+               onerror="this.onerror=null;this.src='${fallbackUrl}';">
+        </div>
+        <div class="device-card__info">
+          <p class="device-card__name">${escapeHtml(device.name)}</p>
+          <p class="device-card__id">${escapeHtml(device.identifier)}</p>
+        </div>
       </button>`;
     })
     .join("");
@@ -603,13 +658,7 @@ function renderFirmwareTable() {
   firmwareContent.classList.remove("hidden");
 }
 
-function updateWizardStep() {
-  wizardSteps.forEach((item) => {
-    const number = Number(item.dataset.step || 0);
-    item.classList.toggle("wizard-step--active", number === state.currentStep);
-    item.classList.toggle("wizard-step--done", number < state.currentStep);
-  });
-}
+// Removed legacy wizard steps logic
 
 function updateTypeToggle() {
   typeButtons.forEach((btn) => {
