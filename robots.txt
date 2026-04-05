@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://ipskzi.com/sitemap.xml
+Host: ipskzi.com
