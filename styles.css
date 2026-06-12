@@ -493,6 +493,7 @@ body[data-theme="light"] .theme-toggle__track {
 }
 
 .theme-toggle__thumb {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -976,6 +977,49 @@ body[data-theme="light"] .theme-toggle__icon--moon {
 .panel {
   background: transparent;
   padding: 30px 0;
+}
+
+.panel__head-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--control-bg);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+  flex-shrink: 0;
+  box-shadow: var(--shadow);
+}
+
+.back-btn:hover {
+  background: var(--control-bg-hover);
+  transform: translateX(-3px);
+  border-color: var(--text-soft);
+  color: var(--blue);
+}
+
+.back-btn:active {
+  transform: translateX(0) scale(0.95);
+}
+
+.back-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+.back-btn.hidden {
+  display: none !important;
 }
 
 .panel__head {

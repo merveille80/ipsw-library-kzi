@@ -285,9 +285,16 @@
 
     <section id="explorerPanel" class="panel reveal">
       <div class="panel__head">
-        <div>
-          <h2 id="viewTitle" data-i18n="view_title_default">Produits Apple</h2>
-          <p id="deviceScope" data-i18n="step_1_scope">Etape 1: ouvre un dossier produit</p>
+        <div class="panel__head-left">
+          <button id="backBtn" class="back-btn hidden" type="button" aria-label="Retour" title="Retour">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+          </button>
+          <div>
+            <h2 id="viewTitle" data-i18n="view_title_default">Produits Apple</h2>
+            <p id="deviceScope" data-i18n="step_1_scope">Etape 1: ouvre un dossier produit</p>
+          </div>
         </div>
         <div class="panel__head__right">
           <nav class="steps-nav" aria-label="Étapes de navigation">
@@ -448,7 +455,7 @@
     </div>
   </footer>
 
-  <script src="./app.js"></script>
+  <script src="./app.js?v=1.0.4"></script>
 </body>
 
 </html>

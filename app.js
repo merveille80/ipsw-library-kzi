@@ -128,6 +128,7 @@ const TRANSLATIONS = {
 
 const homeBrandBtn = document.getElementById("homeBrandBtn");
 const themeToggleBtn = document.getElementById("themeToggleBtn");
+const backBtn = document.getElementById("backBtn");
 const startExploreBtn = document.getElementById("startExploreBtn");
 const jumpProductsBtn = document.getElementById("jumpProductsBtn");
 const heroQuickProducts = document.getElementById("heroQuickProducts");
@@ -176,6 +177,20 @@ function bindEvents() {
     const nextTheme = state.theme === "dark" ? "light" : "dark";
     setTheme(nextTheme);
   });
+  
+  if (backBtn) {
+    backBtn.addEventListener("click", () => {
+      if (state.currentStep === 3) {
+        state.currentStep = 2;
+        state.selectedIdentifier = "";
+        state.selectedDetails = null;
+        state.showAllFirmwares = false;
+        renderAll();
+      } else if (state.currentStep === 2) {
+        goToHome({ scrollTarget: "explorer" });
+      }
+    });
+  }
 
   if (startExploreBtn) {
     startExploreBtn.addEventListener("click", () => {
@@ -288,6 +303,24 @@ function bindEvents() {
       explorerPanel.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   }
+  
+  // Clickable progress steps breadcrumbs
+  const stepDots = document.querySelectorAll(".step-dot");
+  stepDots.forEach((dot) => {
+    dot.addEventListener("click", () => {
+      const step = parseInt(dot.dataset.step, 10);
+      if (step === 1 && state.currentStep > 1) {
+        goToHome({ scrollTarget: "explorer" });
+      } else if (step === 2 && state.currentStep > 2) {
+        state.currentStep = 2;
+        state.selectedIdentifier = "";
+        state.selectedDetails = null;
+        state.showAllFirmwares = false;
+        applyDeviceFilters();
+        renderAll();
+      }
+    });
+  });
 
   // Animate Hero stats count-up on load
   setTimeout(() => {
@@ -444,6 +477,10 @@ function updateExplorerView() {
   const isStep3 = state.currentStep === 3;
 
   const dict = TRANSLATIONS[state.lang] || TRANSLATIONS.fr;
+
+  if (backBtn) {
+    backBtn.classList.toggle("hidden", isStep1);
+  }
 
   categoryView.classList.toggle("hidden", !isStep1);
   modelView.classList.toggle("hidden", !isStep2);
