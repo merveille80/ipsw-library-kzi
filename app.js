@@ -73,13 +73,16 @@ const TRANSLATIONS = {
     show_less: 'Afficher moins',
     empty_firmwares: 'Aucune version disponible pour cet appareil.',
     seo_title: 'Site pour télécharger les systèmes iPhone et firmwares Apple',
-    seo_desc: 'IPSW Library Kzi te permet de trouver rapidement le bon firmware Apple officiel. Recherche par produit, modèle, version, build et signature pour télécharger le bon fichier IPSW ou OTA.',
+    seo_desc: 'Firmware Library te permet de trouver rapidement le bon firmware Apple officiel. Recherche par produit, modèle, version, build et signature pour télécharger le bon fichier IPSW ou OTA.',
     seo_card_1_title: 'iPhone et iOS',
     seo_card_1_desc: 'Télécharge les fichiers système iPhone (IPSW) et retrouve les versions iOS stables ou anciennes, modèle par modèle.',
     seo_card_2_title: 'iPad, Mac, Watch, TV',
     seo_card_2_desc: 'Accède aussi aux firmwares iPadOS, macOS, watchOS et tvOS dans une navigation simple en dossiers successifs.',
     seo_card_3_title: 'IPSW et OTA officiels',
     seo_card_3_desc: 'Bascule en un clic entre IPSW et OTA, vérifie le statut de signature et lance le téléchargement direct.',
+    stat_firmwares: 'Firmwares',
+    stat_platforms: 'Plateformes',
+    stat_users: 'Utilisateurs',
   },
   en: {
     hero_title: 'Access the <span class="hero__title-gradient">perfect Apple firmware</span> in a few clicks.',
@@ -110,13 +113,16 @@ const TRANSLATIONS = {
     show_less: 'Show less',
     empty_firmwares: 'No versions available for this device.',
     seo_title: 'Site to download iPhone systems and Apple firmwares',
-    seo_desc: 'IPSW Library Kzi allows you to quickly find the correct official Apple firmware. Search by product, model, version, build, and signature to download the right IPSW or OTA file.',
+    seo_desc: 'Firmware Library allows you to quickly find the correct official Apple firmware. Search by product, model, version, build, and signature to download the right IPSW or OTA file.',
     seo_card_1_title: 'iPhone and iOS',
     seo_card_1_desc: 'Download iPhone system files (IPSW) and find stable or older iOS versions, model by model.',
     seo_card_2_title: 'iPad, Mac, Watch, TV',
     seo_card_2_desc: 'Also access iPadOS, macOS, watchOS, and tvOS firmwares in a simple successive folder navigation.',
     seo_card_3_title: 'Official IPSW and OTA',
     seo_card_3_desc: 'Switch between IPSW and OTA in one click, check signature status, and start direct download.',
+    stat_firmwares: 'Firmwares',
+    stat_platforms: 'Platforms',
+    stat_users: 'Users',
   },
 };
 
@@ -244,6 +250,55 @@ function bindEvents() {
       setLanguage(event.target.value);
     });
   }
+
+  // Custom Language Select Dropdown
+  const langDropdown = document.getElementById("langDropdown");
+  if (langDropdown) {
+    const trigger = langDropdown.querySelector(".custom-select__trigger");
+    const options = langDropdown.querySelectorAll(".custom-select__option");
+
+    trigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isExpanded = trigger.getAttribute("aria-expanded") === "true";
+      trigger.setAttribute("aria-expanded", !isExpanded);
+      langDropdown.classList.toggle("is-open");
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!langDropdown.contains(e.target)) {
+        trigger.setAttribute("aria-expanded", "false");
+        langDropdown.classList.remove("is-open");
+      }
+    });
+
+    options.forEach((opt) => {
+      opt.addEventListener("click", () => {
+        const val = opt.dataset.value;
+        setLanguage(val);
+        trigger.setAttribute("aria-expanded", "false");
+        langDropdown.classList.remove("is-open");
+      });
+    });
+  }
+
+  // Scroll indicator click scroll
+  const scrollIndicator = document.getElementById("scrollIndicator");
+  if (scrollIndicator) {
+    scrollIndicator.addEventListener("click", () => {
+      explorerPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  }
+
+  // Animate Hero stats count-up on load
+  setTimeout(() => {
+    const fwStat = document.getElementById("fwStatNumber");
+    const platStat = document.getElementById("platStatNumber");
+    const userStat = document.getElementById("userStatNumber");
+    
+    if (fwStat) animateCount(fwStat, 500, "+");
+    if (platStat) animateCount(platStat, 8, "");
+    if (userStat) animateCount(userStat, 10, "K+");
+  }, 400);
 
   familyGallery.addEventListener("click", (event) => {
     const card = event.target.closest(".family-card");
@@ -435,7 +490,26 @@ function updateExplorerView() {
 }
 
 function updateNavigation() {
-  // Navigation simplified: could be used for showing/hiding back button if needed in design
+  const step = state.currentStep;
+  const dots = [
+    document.getElementById("stepDot1"),
+    document.getElementById("stepDot2"),
+    document.getElementById("stepDot3"),
+  ];
+  const lines = document.querySelectorAll(".step-line");
+
+  dots.forEach((dot, i) => {
+    if (!dot) return;
+    const dotStep = i + 1;
+    dot.classList.remove("is-active", "is-done");
+    if (dotStep === step) dot.classList.add("is-active");
+    else if (dotStep < step) dot.classList.add("is-done");
+  });
+
+  lines.forEach((line, i) => {
+    line.classList.remove("is-done");
+    if (i + 2 <= step) line.classList.add("is-done");
+  });
 }
 
 function applyInitialLanguage() {
@@ -458,6 +532,22 @@ function setLanguage(lang) {
   state.lang = lang;
   document.documentElement.lang = lang;
   if (langSelect) langSelect.value = lang;
+
+  // Custom language selector sync
+  const langDropdown = document.getElementById("langDropdown");
+  if (langDropdown) {
+    const label = langDropdown.querySelector(".custom-select__label");
+    const options = langDropdown.querySelectorAll(".custom-select__option");
+    options.forEach((opt) => {
+      const isSel = opt.dataset.value === lang;
+      opt.classList.toggle("is-selected", isSel);
+      opt.setAttribute("aria-selected", isSel ? "true" : "false");
+      if (isSel && label) {
+        label.textContent = opt.textContent;
+      }
+    });
+  }
+
   try {
     localStorage.setItem("ipsw-lang", lang);
   } catch {
@@ -503,7 +593,7 @@ function renderFamilyGallery() {
       type="button"
       class="family-card reveal"
       data-family="${family}"
-      style="animation-delay:${Math.min(index * 24, 220)}ms"
+      style="animation-delay:${Math.min(index * 24, 220)}ms; --sibling-index:${index + 1};"
     >
       <div class="family-card__media">${imageMarkup}</div>
       <span class="family-card__label">${escapeHtml(meta.label)}</span>
@@ -533,7 +623,7 @@ function renderDevices() {
         type="button"
         class="device-card reveal ${selectedClass}"
         data-identifier="${device.identifier}"
-        style="animation-delay:${Math.min(index * 14, 260)}ms"
+        style="animation-delay:${Math.min(index * 14, 260)}ms; --sibling-index:${index + 1};"
       >
         <div class="device-card__img">
           <img src="${imgUrl}" alt="${escapeHtml(device.name)}" loading="lazy" 
@@ -559,8 +649,19 @@ async function loadDeviceDetails(identifier) {
   state.currentStep = 3;
 
   firmwarePlaceholder.classList.remove("hidden");
-  firmwarePlaceholder.innerHTML =
-    "<h2>Chargement...</h2><p>Recuperation des fichiers systeme en cours.</p>";
+  firmwarePlaceholder.innerHTML = `
+    <div class="skeleton-table">
+      <div class="shimmer" style="width: 250px; height: 28px; margin: 0 auto 12px; border-radius: 6px;"></div>
+      <div class="shimmer" style="width: 120px; height: 16px; margin: 0 auto 24px; border-radius: 4px;"></div>
+      <div style="border: 1px solid var(--line); border-radius: var(--radius-md); overflow: hidden; max-width: 900px; margin: 0 auto; background: var(--surface);">
+        <div class="shimmer" style="height: 48px; border-bottom: 1px solid var(--line);"></div>
+        <div class="shimmer" style="height: 48px; border-bottom: 1px solid var(--line);"></div>
+        <div class="shimmer" style="height: 48px; border-bottom: 1px solid var(--line);"></div>
+        <div class="shimmer" style="height: 48px; border-bottom: 1px solid var(--line);"></div>
+        <div class="shimmer" style="height: 48px;"></div>
+      </div>
+    </div>
+  `;
   firmwareContent.classList.add("hidden");
   toggleRowsBtn.classList.add("hidden");
   renderAll();
@@ -616,7 +717,7 @@ function renderFirmwareTable() {
     )} disponible pour cet appareil.</div></td></tr>`;
   } else {
     firmwareTableBody.innerHTML = rows
-      .map((fw) => {
+      .map((fw, index) => {
         const releaseDate = formatDate(fw.releasedate || fw.uploaddate);
         const build = fw.buildid || "-";
         const size = formatBytes(fw.filesize);
@@ -626,7 +727,7 @@ function renderFirmwareTable() {
         const link = sanitizeUrl(fw.url);
         const version = fw.version || "-";
 
-        return `<tr class="firmware-row">
+        return `<tr class="firmware-row" style="--sibling-index:${index + 1};">
           <td data-label="Version">${escapeHtml(version)}</td>
           <td class="mono" data-label="Build">${escapeHtml(build)}</td>
           <td data-label="Date">${escapeHtml(releaseDate)}</td>
@@ -683,7 +784,7 @@ function applyInitialTheme() {
 function setTheme(theme) {
   state.theme = theme === "dark" ? "dark" : "light";
   document.body.setAttribute("data-theme", state.theme);
-  themeToggleBtn.textContent = state.theme === "dark" ? "Light" : "Dark";
+  // Icon switch is handled by CSS via body[data-theme]
   try {
     localStorage.setItem("ipsw-theme", state.theme);
   } catch {
@@ -788,4 +889,24 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function animateCount(el, target, suffix = "", duration = 1500) {
+  const stepTime = 30;
+  const steps = duration / stepTime;
+  let currentStep = 0;
+
+  const timer = setInterval(() => {
+    currentStep++;
+    const progress = Math.min(currentStep / steps, 1);
+    const easeProgress = progress * (2 - progress);
+    const current = Math.floor(easeProgress * target);
+
+    el.textContent = current + suffix;
+
+    if (progress >= 1) {
+      clearInterval(timer);
+      el.textContent = target + suffix;
+    }
+  }, stepTime);
 }

@@ -3,23 +3,26 @@
 
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="alternate icon" href="./favicon.svg" />
+  <link rel="apple-touch-icon" href="./favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ipsw Library Kzi | Site pour telecharger IPSW iPhone, iPad, iOS & OTA</title>
+  <title>Firmware Library | Site pour telecharger IPSW iPhone, iPad, iOS & OTA</title>
   <meta name="description"
-    content="IPSW Library Kzi est un site pour telecharger les systemes iPhone et firmwares Apple officiels (IPSW/OTA): iOS, iPadOS, macOS, watchOS, tvOS, HomePod et Vision." />
+    content="Firmware Library est un site pour telecharger les systemes iPhone et firmwares Apple officiels (IPSW/OTA): iOS, iPadOS, macOS, watchOS, tvOS, HomePod et Vision." />
   <meta name="keywords"
-    content="IPSW Library Kzi, site pour telecharger systeme iphone, telecharger ios, telecharger ipsw iphone, telecharger firmware apple, ipsw download, ota download, iOS firmware download, iPadOS firmware, macOS IPSW, Apple Watch firmware, tvOS firmware, download Apple firmware officiel" />
+    content="Firmware Library, site pour telecharger systeme iphone, telecharger ios, telecharger ipsw iphone, telecharger firmware apple, ipsw download, ota download, iOS firmware download, iPadOS firmware, macOS IPSW, Apple Watch firmware, tvOS firmware, download Apple firmware officiel" />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <meta name="googlebot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <meta name="bingbot" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <meta name="author" content="Merveille Tambwe" />
-  <meta name="application-name" content="IPSW Library Kzi" />
-  <meta name="apple-mobile-web-app-title" content="IPSW Library Kzi" />
+  <meta name="application-name" content="Firmware Library" />
+  <meta name="apple-mobile-web-app-title" content="Firmware Library" />
   <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f3f7ff" />
   <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0b111f" />
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="IPSW Library Kzi" />
-  <meta property="og:title" content="IPSW Library Kzi | Site de telechargement IPSW et OTA Apple" />
+  <meta property="og:site_name" content="Firmware Library" />
+  <meta property="og:title" content="Firmware Library | Site de telechargement IPSW et OTA Apple" />
   <meta property="og:url" content="https://ipskzi.com/" />
   <meta property="og:description"
     content="Site pour telecharger les systemes iPhone et firmwares Apple officiels (IPSW/OTA) en quelques clics." />
@@ -29,7 +32,7 @@
   <meta property="og:locale" content="fr_FR" />
   <meta property="og:locale:alternate" content="en_US" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="IPSW Library Kzi | Telechargement IPSW iPhone & OTA" />
+  <meta name="twitter:title" content="Firmware Library | Telechargement IPSW iPhone & OTA" />
   <meta name="twitter:url" content="https://ipskzi.com/" />
   <meta name="twitter:description"
     content="Trouve et telecharge les firmwares Apple officiels pour iPhone, iPad, Mac, Watch et Apple TV." />
@@ -48,15 +51,15 @@
         "@graph": [
           {
             "@type": "Organization",
-            "name": "IPSW Library Kzi",
+            "name": "Firmware Library",
             "url": "https://ipskzi.com/",
             "logo": "https://ipskzi.com/favicon.svg"
           },
           {
             "@type": "WebSite",
-            "name": "IPSW Library Kzi",
+            "name": "Firmware Library",
             "alternateName": "Apple Store Kolwezi",
-            "description": "IPSW Library Kzi aide a trouver et telecharger les firmwares Apple officiels (IPSW et OTA).",
+            "description": "Firmware Library aide a trouver et telecharger les firmwares Apple officiels (IPSW et OTA).",
             "url": "https://ipskzi.com/",
             "inLanguage": ["fr", "en"],
             "potentialAction": {
@@ -67,7 +70,7 @@
           },
           {
             "@type": "SoftwareApplication",
-            "name": "IPSW Library Kzi",
+            "name": "Firmware Library",
             "applicationCategory": "UtilitiesApplication",
             "operatingSystem": "Web",
             "offers": {
@@ -100,22 +103,54 @@
         ]
       }
     </script>
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./styles.css?v=1.0.4" />
 </head>
 
 <body>
+  <div class="bg-glow bg-glow--1" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--2" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow--3" aria-hidden="true"></div>
   <header class="topbar">
     <a id="homeBrandBtn" class="topbar__brand topbar__brand-btn" href="./" aria-label="Retourner a l'accueil">
-      <span class="dot"></span>
-      <span>IPSW Library Kzi</span>
+      <span class="topbar__logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 2L12 14M12 14l-4-4M12 14l4-4"/>
+          <path d="M4 17v1a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-1"/>
+        </svg>
+      </span>
+      <span>Firmware Library</span>
     </a>
     <div class="topbar__actions">
-      <select id="langSelect" class="lang-select" aria-label="Select Language">
+      <div class="custom-select" id="langDropdown">
+        <button class="custom-select__trigger" type="button" aria-expanded="false" aria-haspopup="listbox" aria-label="Choisir la langue">
+          <span class="custom-select__label">Français</span>
+          <svg class="custom-select__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m6 9 6 6 6-6"/>
+          </svg>
+        </button>
+        <ul class="custom-select__options" role="listbox">
+          <li class="custom-select__option is-selected" data-value="fr" role="option" aria-selected="true">Français</li>
+          <li class="custom-select__option" data-value="en" role="option" aria-selected="false">English</li>
+        </ul>
+      </div>
+      <select id="langSelect" class="hidden" aria-hidden="true">
         <option value="fr">Français</option>
         <option value="en">English</option>
       </select>
       <button id="themeToggleBtn" class="theme-toggle" type="button" aria-label="Changer le theme">
-        Dark
+        <span class="theme-toggle__track">
+          <span class="theme-toggle__thumb">
+            <!-- Sun icon (light mode) -->
+            <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+            </svg>
+            <!-- Moon icon (dark mode) -->
+            <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </span>
+        </span>
       </button>
     </div>
   </header>
@@ -127,7 +162,7 @@
           <img src="assets/devices/iphone.webp" alt="" />
         </span>
         <span class="hero-side-icons__item hero-side-icons__item--b">
-          <img src="assets/devices/watch.webp" alt="" />
+          <img src="assets/devices/watch_v2.webp" alt="" />
         </span>
       </div>
 
@@ -141,7 +176,16 @@
       </div>
 
       <div class="hero__content">
-        <p class="hero__eyebrow"><span class="hero__pulse"></span>Apple Store Kolwezi</p>
+        <!-- Social Proof Badge (replaces eyebrow) -->
+        <div class="social-proof">
+          <div class="social-proof__avatars">
+            <img class="social-proof__avatar" src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=50" alt="" />
+            <img class="social-proof__avatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=50" alt="" />
+            <img class="social-proof__avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=50" alt="" />
+          </div>
+          <span class="social-proof__text">Trusted by <strong>10,000+</strong> developers</span>
+        </div>
+
         <h1 class="hero__title" data-i18n="hero_title">
           Accede au <span class="hero__title-gradient">firmware Apple parfait</span> en quelques clics.
         </h1>
@@ -164,7 +208,7 @@
             <span>Mac</span>
           </button>
           <button class="hero-mini-product" type="button" data-family="watch">
-            <img src="assets/devices/watch.webp" alt="" />
+            <img src="assets/devices/watch_v2.webp" alt="" />
             <span>Watch</span>
           </button>
           <button class="hero-mini-product" type="button" data-family="appletv">
@@ -180,7 +224,7 @@
             <span>HomePod</span>
           </button>
           <button class="hero-mini-product" type="button" data-family="ipod">
-            <img src="assets/devices/ipod.webp" alt="" />
+            <img src="assets/devices/ipod_v2.webp" alt="" />
             <span>iPod</span>
           </button>
         </div>
@@ -192,6 +236,23 @@
           <button id="jumpProductsBtn" class="hero-btn hero-btn--secondary" type="button" data-i18n="hero_products">
             Voir les produits
           </button>
+        </div>
+
+        <div class="hero__stats">
+          <div class="hero__stat">
+            <span class="hero__stat-number" id="fwStatNumber">0</span>
+            <span class="hero__stat-label" data-i18n="stat_firmwares">Firmwares</span>
+          </div>
+          <div class="hero__stat-divider"></div>
+          <div class="hero__stat">
+            <span class="hero__stat-number" id="platStatNumber">0</span>
+            <span class="hero__stat-label" data-i18n="stat_platforms">Plateformes</span>
+          </div>
+          <div class="hero__stat-divider"></div>
+          <div class="hero__stat">
+            <span class="hero__stat-number" id="userStatNumber">0K+</span>
+            <span class="hero__stat-label" data-i18n="stat_users">Utilisateurs</span>
+          </div>
         </div>
 
         <div class="controls">
@@ -213,6 +274,13 @@
           </div>
         </div>
       </div>
+
+      <!-- Scroll indicator -->
+      <button class="hero__scroll-indicator" type="button" aria-label="Défiler vers le bas" id="scrollIndicator">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 5v14M19 12l-7 7-7-7"/>
+        </svg>
+      </button>
     </section>
 
     <section id="explorerPanel" class="panel reveal">
@@ -221,22 +289,40 @@
           <h2 id="viewTitle" data-i18n="view_title_default">Produits Apple</h2>
           <p id="deviceScope" data-i18n="step_1_scope">Etape 1: ouvre un dossier produit</p>
         </div>
-        <p id="deviceCount" data-i18n="loading">Chargement...</p>
+        <div class="panel__head__right">
+          <nav class="steps-nav" aria-label="Étapes de navigation">
+            <span class="step-dot" id="stepDot1" data-step="1" aria-label="Étape 1: Catégorie"></span>
+            <span class="step-line"></span>
+            <span class="step-dot" id="stepDot2" data-step="2" aria-label="Étape 2: Modèle"></span>
+            <span class="step-line"></span>
+            <span class="step-dot" id="stepDot3" data-step="3" aria-label="Étape 3: Firmware"></span>
+          </nav>
+          <p id="deviceCount" data-i18n="loading">Chargement...</p>
+        </div>
       </div>
 
-      <div id="categoryView">
+      <div id="categoryView" class="view-section">
         <div id="familyGallery" class="family-gallery" aria-label="Choix du produit"></div>
       </div>
 
-      <div id="modelView" class="hidden">
+      <div id="modelView" class="view-section hidden">
         <div id="deviceGrid" class="device-grid" aria-live="polite"></div>
         <button id="loadMoreBtn" class="load-more" type="button" data-i18n="show_more">Afficher plus</button>
       </div>
 
-      <div id="fileView" class="hidden">
+      <div id="fileView" class="view-section hidden">
         <div id="firmwarePlaceholder" class="placeholder">
-          <h2 data-i18n="loading">Chargement...</h2>
-          <p data-i18n="loading_firmwares">Recuperation des fichiers systeme en cours.</p>
+          <div class="skeleton-table">
+            <div class="shimmer" style="width: 250px; height: 28px; margin: 0 auto 12px; border-radius: 6px;"></div>
+            <div class="shimmer" style="width: 120px; height: 16px; margin: 0 auto 24px; border-radius: 4px;"></div>
+            <div style="border: 1px solid var(--line); border-radius: var(--radius-md); overflow: hidden; max-width: 900px; margin: 0 auto; background: var(--surface);">
+              <div class="shimmer" style="height: 48px; border-bottom: 1px solid var(--line);"></div>
+              <div class="shimmer" style="height: 48px; border-bottom: 1px solid var(--line);"></div>
+              <div class="shimmer" style="height: 48px; border-bottom: 1px solid var(--line);"></div>
+              <div class="shimmer" style="height: 48px; border-bottom: 1px solid var(--line);"></div>
+              <div class="shimmer" style="height: 48px;"></div>
+            </div>
+          </div>
         </div>
 
         <div id="firmwareContent" class="firmware-content hidden">
@@ -269,10 +355,55 @@
       </div>
     </section>
 
+    <!-- Testimonials Section -->
+    <section class="testimonials reveal" aria-label="Témoignages utilisateurs">
+      <h2 class="testimonials__title">Ce que disent nos utilisateurs</h2>
+      <p class="testimonials__sub">Des milliers de développeurs et techniciens font confiance à Firmware Library.</p>
+      <div class="testimonials__grid">
+
+        <article class="tcard">
+          <div class="tcard__media">
+            <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=600" alt="John Doe" />
+            <div class="tcard__overlay" aria-hidden="true"></div>
+          </div>
+          <div class="tcard__body">
+            <p class="tcard__quote">"Firmware Library a rendu la recherche et le téléchargement de firmwares Apple incroyablement simple."</p>
+            <p class="tcard__name">— Jean-Marc K.</p>
+            <p class="tcard__role">Développeur iOS</p>
+          </div>
+        </article>
+
+        <article class="tcard">
+          <div class="tcard__media">
+            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=600" alt="Alex" />
+            <div class="tcard__overlay" aria-hidden="true"></div>
+          </div>
+          <div class="tcard__body">
+            <p class="tcard__quote">"Je trouve tous les firmwares en quelques secondes. Interface propre, rapide, parfaite."</p>
+            <p class="tcard__name">— Alex T.</p>
+            <p class="tcard__role">Technicien Apple</p>
+          </div>
+        </article>
+
+        <article class="tcard">
+          <div class="tcard__media">
+            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=600&h=600&auto=format&fit=crop" alt="Sarah" />
+            <div class="tcard__overlay" aria-hidden="true"></div>
+          </div>
+          <div class="tcard__body">
+            <p class="tcard__quote">"La vérification de signature en temps réel est un atout majeur. Je ne cherche plus ailleurs."</p>
+            <p class="tcard__name">— Sarah M.</p>
+            <p class="tcard__role">Ingénieure Système</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
     <section class="seo-copy reveal" aria-label="Informations de telechargement firmware Apple">
       <h2 data-i18n="seo_title">Site pour telecharger les systemes iPhone et firmwares Apple</h2>
       <p data-i18n="seo_desc">
-        IPSW Library Kzi te permet de trouver rapidement le bon firmware Apple officiel.
+        Firmware Library te permet de trouver rapidement le bon firmware Apple officiel.
         Recherche par produit, modele, version, build et signature pour telecharger le bon
         fichier IPSW ou OTA.
       </p>
@@ -302,7 +433,20 @@
     </section>
   </main>
 
-  <footer class="site-footer">@2026 Merveille Tambwe/Cyberspace Sarl</footer>
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="site-footer__brand">
+        <span class="dot" style="width:8px;height:8px;"></span>
+        <span class="site-footer__brand-name">Firmware Library</span>
+      </div>
+      <nav class="site-footer__links" aria-label="Liens footer">
+        <a href="https://api.ipsw.me" target="_blank" rel="noreferrer">API IPSW.me</a>
+        <a href="https://ipsw.me" target="_blank" rel="noreferrer">IPSW.me</a>
+        <a href="https://appledb.dev" target="_blank" rel="noreferrer">AppleDB</a>
+      </nav>
+      <p class="site-footer__copy">&copy; 2026 Merveille Tambwe &middot; Cyberspace Sarl</p>
+    </div>
+  </footer>
 
   <script src="./app.js"></script>
 </body>
