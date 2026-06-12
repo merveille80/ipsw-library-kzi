@@ -820,8 +820,9 @@ function applyInitialTheme() {
 
 function setTheme(theme) {
   state.theme = theme === "dark" ? "dark" : "light";
+  // Set on both <html> and <body> for FOUC prevention and CSS compatibility
+  document.documentElement.setAttribute("data-theme", state.theme);
   document.body.setAttribute("data-theme", state.theme);
-  // Icon switch is handled by CSS via body[data-theme]
   try {
     localStorage.setItem("ipsw-theme", state.theme);
   } catch {
