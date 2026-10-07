@@ -49,7 +49,8 @@ const TRANSLATIONS = {
     hero_subtitle: 'Navigation fluide par dossiers successifs, vérification de signature et téléchargement direct des fichiers système.',
     hero_explore: 'Commencer maintenant',
     hero_products: 'Voir les produits',
-    search_placeholder: 'Rechercher un modèle ou un identifier (ex: iPhone16,2)',
+    search_placeholder: 'Rechercher un modèle ou un identifiant…',
+    search_placeholder_mobile: 'Rechercher…',
     view_title_default: 'Produits Apple',
     step_1_scope: 'Étape 1: ouvre un dossier produit',
     step_1_status: 'Étape 1: choisis une catégorie.',
@@ -89,7 +90,8 @@ const TRANSLATIONS = {
     hero_subtitle: 'Fluid navigation through successive folders, signature verification, and direct download of system files.',
     hero_explore: 'Start now',
     hero_products: 'See products',
-    search_placeholder: 'Search for a model or identifier (ex: iPhone16,2)',
+    search_placeholder: 'Search a model or identifier…',
+    search_placeholder_mobile: 'Search…',
     view_title_default: 'Apple Products',
     step_1_scope: 'Step 1: open a product folder',
     step_1_status: 'Step 1: choose a category.',
@@ -161,6 +163,8 @@ async function init() {
   applyInitialLanguage();
   applyInitialQueryFromUrl();
   bindEvents();
+  bindCardLighting();
+  window.matchMedia("(max-width: 480px)").addEventListener("change", applyTranslations);
   renderFamilySkeleton();
   await loadDevices();
 }
@@ -600,7 +604,9 @@ function applyTranslations() {
     if (!dict[key]) return;
 
     if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
-      el.placeholder = dict[key];
+      const compactSearch = key === "search_placeholder" && window.matchMedia("(max-width: 480px)").matches;
+      el.placeholder = compactSearch ? dict.search_placeholder_mobile : dict[key];
+      if (key === "search_placeholder") el.setAttribute("aria-label", dict[key]);
     } else if (el.classList.contains("hero__title")) {
       el.innerHTML = dict[key];
     } else {
@@ -622,6 +628,9 @@ function renderFamilyGallery() {
   familyGallery.innerHTML = FAMILY_ORDER.map((family, index) => {
     const meta = FAMILY_META[family];
     const count = counts[family] || 0;
+    const modelLabel = state.lang === "en"
+      ? (count === 1 ? "model" : "models")
+      : (count === 1 ? "modèle" : "modèles");
     const imageMarkup = meta.image
       ? `<img class="family-card__image" src="${meta.image}" alt="${escapeHtml(meta.label)}" loading="lazy" onerror="this.onerror=null;this.src='';this.classList.add('hidden');">`
       : '<div class="family-card__fallback">+</div>';
@@ -632,9 +641,12 @@ function renderFamilyGallery() {
       data-family="${family}"
       style="animation-delay:${Math.min(index * 24, 220)}ms; --sibling-index:${index + 1};"
     >
+      <span class="family-card__open" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+      </span>
       <div class="family-card__media">${imageMarkup}</div>
       <span class="family-card__label">${escapeHtml(meta.label)}</span>
-      <span class="family-card__count">${count} modeles</span>
+      <span class="family-card__count">${count} ${modelLabel}</span>
     </button>`;
   }).join("");
 }
@@ -930,6 +942,10 @@ function escapeHtml(value) {
 }
 
 function animateCount(el, target, suffix = "", duration = 1500) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    el.textContent = target + suffix;
+    return;
+  }
   const stepTime = 30;
   const steps = duration / stepTime;
   let currentStep = 0;
@@ -947,4 +963,24 @@ function animateCount(el, target, suffix = "", duration = 1500) {
       el.textContent = target + suffix;
     }
   }, stepTime);
+}
+
+// Subtle pointer light, contained within the existing cards.
+function bindCardLighting() {
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  [familyGallery, deviceGrid].forEach(grid => {
+    let frame = 0;
+    grid.addEventListener("pointermove", event => {
+      if (event.pointerType !== "mouse" || reducedMotion.matches) return;
+      const card = event.target.closest(".family-card, .device-card");
+      if (!card) return;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty("--pointer-x", `${event.clientX - rect.left}px`);
+        card.style.setProperty("--pointer-y", `${event.clientY - rect.top}px`);
+      });
+    });
+    grid.addEventListener("pointerleave", () => cancelAnimationFrame(frame));
+  });
 }

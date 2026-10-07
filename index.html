@@ -104,7 +104,8 @@
         ]
       }
     </script>
-  <link rel="stylesheet" href="./styles.css?v=1.0.5" />
+  <link rel="stylesheet" href="./styles.css?v=1.1.0" />
+  <link rel="stylesheet" href="./design-polish.css?v=1.2.17" />
   <!-- Inline theme init: apply before render to prevent FOUC -->
   <script>
     (function() {
@@ -202,10 +203,6 @@
         <h1 class="hero__title" data-i18n="hero_title">
           Accede au <span class="hero__title-gradient">firmware Apple parfait</span> en quelques clics.
         </h1>
-        <p class="hero__subtitle" data-i18n="hero_subtitle">
-          Navigation fluide par dossiers successifs, verification de signature et telechargement
-          direct des fichiers systeme.
-        </p>
 
         <div id="heroQuickProducts" class="hero__mini-products">
           <button class="hero-mini-product" type="button" data-family="iphone">
@@ -376,14 +373,14 @@
     </section>
 
     <!-- Testimonials Section -->
-    <section class="testimonials reveal" aria-label="Témoignages utilisateurs">
+    <section id="testimonials" class="testimonials reveal" aria-label="Témoignages utilisateurs">
       <h2 class="testimonials__title">Ce que disent nos utilisateurs</h2>
       <p class="testimonials__sub">Des milliers de développeurs et techniciens font confiance à Firmware Library.</p>
       <div class="testimonials__grid">
 
         <article class="tcard">
           <div class="tcard__media">
-            <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=600" alt="John Doe" />
+            <img src="assets/portraits/portrait-150-billi.jpg" alt="Portrait photographique d’illustration — homme souriant" loading="lazy" decoding="async" />
             <div class="tcard__overlay" aria-hidden="true"></div>
           </div>
           <div class="tcard__body">
@@ -395,7 +392,7 @@
 
         <article class="tcard">
           <div class="tcard__media">
-            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=600" alt="Alex" />
+            <img src="assets/portraits/portrait-hongwei-fan.jpg" alt="Portrait photographique d’illustration — homme en extérieur" loading="lazy" decoding="async" />
             <div class="tcard__overlay" aria-hidden="true"></div>
           </div>
           <div class="tcard__body">
@@ -407,7 +404,7 @@
 
         <article class="tcard">
           <div class="tcard__media">
-            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=600&h=600&auto=format&fit=crop" alt="Sarah" />
+            <img src="assets/portraits/portrait-blake-cheek.jpg" alt="Portrait photographique d’illustration — femme souriante" loading="lazy" decoding="async" />
             <div class="tcard__overlay" aria-hidden="true"></div>
           </div>
           <div class="tcard__body">
@@ -459,16 +456,11 @@
         <span class="dot" style="width:8px;height:8px;"></span>
         <span class="site-footer__brand-name">Firmware Library</span>
       </div>
-      <nav class="site-footer__links" aria-label="Liens footer">
-        <a href="https://api.ipsw.me" target="_blank" rel="noreferrer">API IPSW.me</a>
-        <a href="https://ipsw.me" target="_blank" rel="noreferrer">IPSW.me</a>
-        <a href="https://appledb.dev" target="_blank" rel="noreferrer">AppleDB</a>
-      </nav>
       <p class="site-footer__copy">&copy; 2026 Merveille Tambwe &middot; Cyberspace Sarl</p>
     </div>
   </footer>
 
-  <script src="./app.js?v=1.0.5"></script>
+  <script src="./app.js?v=1.2.1"></script>
 </body>
 
 </html>
