@@ -1,0 +1,25 @@
+{
+  "name": "ipsw-library-kzi",
+  "account_id": "305945d771c1a0712bbd78d52326b4f9",
+  "compatibility_date": "2026-06-12",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "build": {
+    "command": "node scripts/build-static.mjs"
+  },
+  "assets": {
+    "directory": "./dist"
+  },
+  "routes": [
+    {
+      "pattern": "ipskzi.com",
+      "custom_domain": true
+    }
+  ],
+  "observability": {
+    "enabled": true
+  },
+  "workers_dev": true,
+  "preview_urls": true
+}

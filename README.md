@@ -34,51 +34,40 @@ Puis ouvrir:
 - `GET https://api.ipsw.me/v4/devices`
 - `GET https://api.ipsw.me/v4/device/{identifier}?type=ipsw|ota`
 
-## Deploy Cloudflare (Pages + Proxy API)
+## Déploiement Cloudflare Workers
 
-Le projet est prepare pour:
-- frontend statique sur Cloudflare Pages
-- proxy API via `functions/api/[[path]].js` (route locale `/api/*`)
-- fallback developpement local: appel direct `https://api.ipsw.me/v4`
+Le domaine `https://ipskzi.com/` est servi par le Worker `ipsw-library-kzi`.
+La configuration `wrangler.jsonc` publie les fichiers statiques depuis `dist`.
+Le projet Pages du même nom est un projet séparé.
 
-### 1. Login Cloudflare (une seule fois)
+### Connexion et publication
 
 ```bash
 npx wrangler login
-```
-
-Verifier:
-
-```bash
 npx wrangler whoami
+npx wrangler deploy
 ```
 
-### 2. Creer le projet Pages (une fois)
-
-```bash
-npx wrangler pages project create ipsw-library-kzi --production-branch main
-```
-
-### 3. Deploy
-
-Depuis le dossier `ipsw-clone`:
-
-```bash
-npx wrangler pages deploy . --project-name ipsw-library-kzi
-```
-
-Ou en une commande (avec token configure):
+Ou, après connexion :
 
 ```bash
 ./deploy_cloudflare.sh
 ```
 
-### 4. Domaine custom
+Wrangler exécute `node scripts/build-static.mjs` avant le déploiement.
+Ce script copie seulement les fichiers publics du site, les images et les polices.
+Le dépôt Git, la documentation et les fichiers de configuration restent hors de `dist`.
+Les fichiers de licence des polices sont inclus dans les assets.
 
-Dans Cloudflare Dashboard:
-- Pages > `ipsw-library-kzi` > Custom domains
-- Ajouter ton domaine (ex: `ipskzi.com`)
-- SSL sera gere automatiquement par Cloudflare
+Pour préparer le dossier sans publier :
+
+```bash
+node scripts/build-static.mjs
+```
+
+Le frontend appelle directement `https://api.ipsw.me/v4`.
+Les fonctions dans `functions/` sont conservées pour l'ancien déploiement Pages ;
+elles ne sont pas exécutées par le Worker statique.
 
 ## Indexation Google (obligatoire pour apparaitre vite)
 
