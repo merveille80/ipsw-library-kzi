@@ -535,3 +535,28 @@ html[data-theme="dark"] .tcard__role { color: var(--text); }
   #explorerPanel .family-card__label { font-size: .9375rem; }
   .family-card__open { top: 12px; right: 12px; width: 24px; height: 24px; }
 }
+
+/* One short theme crossfade, rather than many independent palette transitions. */
+html[data-theme="light"] { color-scheme: light; }
+html[data-theme="dark"] { color-scheme: dark; }
+html.theme-changing,
+html.theme-changing *,
+html.theme-changing *::before,
+html.theme-changing *::after {
+  transition: none !important;
+}
+::view-transition { pointer-events: none; }
+::view-transition-group(root),
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 160ms;
+  animation-timing-function: linear;
+}
+.theme-toggle__thumb { transition: transform 160ms var(--polish-ease); }
+.theme-toggle__track { transition: background-color 160ms linear; }
+.theme-toggle__icon { transition: opacity 120ms linear, transform 160ms var(--polish-ease); }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation: none !important; }
+}

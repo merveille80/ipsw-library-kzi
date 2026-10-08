@@ -43,6 +43,9 @@ const state = {
   lang: "fr",
 };
 
+let themeTransition = null;
+let themeChangeId = 0;
+
 const TRANSLATIONS = {
   fr: {
     hero_title: 'Accède au <span class="hero__title-gradient">firmware Apple parfait</span> en quelques clics.',
@@ -179,7 +182,7 @@ function bindEvents() {
 
   themeToggleBtn.addEventListener("click", () => {
     const nextTheme = state.theme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
+    setTheme(nextTheme, { animate: true });
   });
   
   if (backBtn) {
@@ -830,15 +833,56 @@ function applyInitialTheme() {
   setTheme(theme);
 }
 
-function setTheme(theme) {
-  state.theme = theme === "dark" ? "dark" : "light";
-  // Set on both <html> and <body> for FOUC prevention and CSS compatibility
-  document.documentElement.setAttribute("data-theme", state.theme);
-  document.body.setAttribute("data-theme", state.theme);
+function setTheme(theme, { animate = false } = {}) {
+  const nextTheme = theme === "dark" ? "dark" : "light";
+  const changeId = ++themeChangeId;
+  state.theme = nextTheme;
+  if (themeTransition) themeTransition.skipTransition();
+
+  const root = document.documentElement;
+  const applyTheme = () => {
+    // Ignore an older callback if the user toggles again before the snapshot finishes.
+    if (changeId !== themeChangeId) return;
+    root.setAttribute("data-theme", nextTheme);
+    document.body.setAttribute("data-theme", nextTheme);
+    try {
+      localStorage.setItem("ipsw-theme", nextTheme);
+    } catch {
+      // Theme switching still works when storage is unavailable.
+    }
+  };
+  const finish = () => {
+    if (changeId !== themeChangeId) return;
+    root.classList.remove("theme-changing");
+    themeTransition = null;
+  };
+
+  if (!animate) {
+    applyTheme();
+    finish();
+    return;
+  }
+
+  // Paint the new palette once; crossfade snapshots instead of repainting every card.
+  root.classList.add("theme-changing");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reducedMotion || document.hidden || typeof document.startViewTransition !== "function") {
+    applyTheme();
+    if (document.hidden) finish();
+    else requestAnimationFrame(() => requestAnimationFrame(finish));
+    return;
+  }
+
   try {
-    localStorage.setItem("ipsw-theme", state.theme);
+    themeTransition = document.startViewTransition(applyTheme);
+    themeTransition.ready.catch(() => {});
+    themeTransition.finished.then(finish, () => {
+      applyTheme();
+      finish();
+    });
   } catch {
-    // no-op
+    applyTheme();
+    requestAnimationFrame(() => requestAnimationFrame(finish));
   }
 }
 
