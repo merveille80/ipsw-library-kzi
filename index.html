@@ -104,7 +104,8 @@
         ]
       }
     </script>
-  <link rel="stylesheet" href="./styles.css?v=1.0.5" />
+  <link rel="stylesheet" href="./styles.css?v=1.1.0" />
+  <link rel="stylesheet" href="./design-polish.css?v=1.2.22" />
   <!-- Inline theme init: apply before render to prevent FOUC -->
   <script>
     (function() {
@@ -202,10 +203,6 @@
         <h1 class="hero__title" data-i18n="hero_title">
           Accede au <span class="hero__title-gradient">firmware Apple parfait</span> en quelques clics.
         </h1>
-        <p class="hero__subtitle" data-i18n="hero_subtitle">
-          Navigation fluide par dossiers successifs, verification de signature et telechargement
-          direct des fichiers systeme.
-        </p>
 
         <div id="heroQuickProducts" class="hero__mini-products">
           <button class="hero-mini-product" type="button" data-family="iphone">
@@ -249,23 +246,6 @@
           <button id="jumpProductsBtn" class="hero-btn hero-btn--secondary" type="button" data-i18n="hero_products">
             Voir les produits
           </button>
-        </div>
-
-        <div class="hero__stats">
-          <div class="hero__stat">
-            <span class="hero__stat-number" id="fwStatNumber">0</span>
-            <span class="hero__stat-label" data-i18n="stat_firmwares">Firmwares</span>
-          </div>
-          <div class="hero__stat-divider"></div>
-          <div class="hero__stat">
-            <span class="hero__stat-number" id="platStatNumber">0</span>
-            <span class="hero__stat-label" data-i18n="stat_platforms">Plateformes</span>
-          </div>
-          <div class="hero__stat-divider"></div>
-          <div class="hero__stat">
-            <span class="hero__stat-number" id="userStatNumber">0K+</span>
-            <span class="hero__stat-label" data-i18n="stat_users">Utilisateurs</span>
-          </div>
         </div>
 
         <div class="controls">
@@ -376,44 +356,50 @@
     </section>
 
     <!-- Testimonials Section -->
-    <section class="testimonials reveal" aria-label="Témoignages utilisateurs">
+    <section id="testimonials" class="testimonials reveal" aria-label="Témoignages utilisateurs">
       <h2 class="testimonials__title">Ce que disent nos utilisateurs</h2>
       <p class="testimonials__sub">Des milliers de développeurs et techniciens font confiance à Firmware Library.</p>
       <div class="testimonials__grid">
 
         <article class="tcard">
           <div class="tcard__media">
-            <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=600" alt="John Doe" />
+            <img src="assets/portraits/portrait-150-billi.jpg" alt="Portrait photographique d’illustration — homme souriant" loading="lazy" decoding="async" />
             <div class="tcard__overlay" aria-hidden="true"></div>
           </div>
           <div class="tcard__body">
-            <p class="tcard__quote">"Firmware Library a rendu la recherche et le téléchargement de firmwares Apple incroyablement simple."</p>
-            <p class="tcard__name">— Jean-Marc K.</p>
-            <p class="tcard__role">Développeur iOS</p>
+            <blockquote class="tcard__quote">Firmware Library a rendu la recherche et le téléchargement de firmwares Apple incroyablement simple.</blockquote>
+            <div class="tcard__author">
+              <p class="tcard__name">Jean-Marc K.</p>
+              <p class="tcard__role">Développeur iOS</p>
+            </div>
           </div>
         </article>
 
         <article class="tcard">
           <div class="tcard__media">
-            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=600" alt="Alex" />
+            <img src="assets/portraits/portrait-hongwei-fan.jpg" alt="Portrait photographique d’illustration — homme en extérieur" loading="lazy" decoding="async" />
             <div class="tcard__overlay" aria-hidden="true"></div>
           </div>
           <div class="tcard__body">
-            <p class="tcard__quote">"Je trouve tous les firmwares en quelques secondes. Interface propre, rapide, parfaite."</p>
-            <p class="tcard__name">— Alex T.</p>
-            <p class="tcard__role">Technicien Apple</p>
+            <blockquote class="tcard__quote">Je trouve tous les firmwares en quelques secondes. Interface propre, rapide, parfaite.</blockquote>
+            <div class="tcard__author">
+              <p class="tcard__name">Alex T.</p>
+              <p class="tcard__role">Technicien Apple</p>
+            </div>
           </div>
         </article>
 
         <article class="tcard">
           <div class="tcard__media">
-            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=600&h=600&auto=format&fit=crop" alt="Sarah" />
+            <img src="assets/portraits/portrait-blake-cheek.jpg" alt="Portrait photographique d’illustration — femme souriante" loading="lazy" decoding="async" />
             <div class="tcard__overlay" aria-hidden="true"></div>
           </div>
           <div class="tcard__body">
-            <p class="tcard__quote">"La vérification de signature en temps réel est un atout majeur. Je ne cherche plus ailleurs."</p>
-            <p class="tcard__name">— Sarah M.</p>
-            <p class="tcard__role">Ingénieure Système</p>
+            <blockquote class="tcard__quote">La vérification de signature en temps réel est un atout majeur. Je ne cherche plus ailleurs.</blockquote>
+            <div class="tcard__author">
+              <p class="tcard__name">Sarah M.</p>
+              <p class="tcard__role">Ingénieure Système</p>
+            </div>
           </div>
         </article>
 
@@ -459,16 +445,11 @@
         <span class="dot" style="width:8px;height:8px;"></span>
         <span class="site-footer__brand-name">Firmware Library</span>
       </div>
-      <nav class="site-footer__links" aria-label="Liens footer">
-        <a href="https://api.ipsw.me" target="_blank" rel="noreferrer">API IPSW.me</a>
-        <a href="https://ipsw.me" target="_blank" rel="noreferrer">IPSW.me</a>
-        <a href="https://appledb.dev" target="_blank" rel="noreferrer">AppleDB</a>
-      </nav>
       <p class="site-footer__copy">&copy; 2026 Merveille Tambwe &middot; Cyberspace Sarl</p>
     </div>
   </footer>
 
-  <script src="./app.js?v=1.0.5"></script>
+  <script src="./app.js?v=1.2.6"></script>
 </body>
 
 </html>

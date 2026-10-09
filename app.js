@@ -43,13 +43,17 @@ const state = {
   lang: "fr",
 };
 
+let themeTransition = null;
+let themeChangeId = 0;
+
 const TRANSLATIONS = {
   fr: {
     hero_title: 'Accède au <span class="hero__title-gradient">firmware Apple parfait</span> en quelques clics.',
     hero_subtitle: 'Navigation fluide par dossiers successifs, vérification de signature et téléchargement direct des fichiers système.',
     hero_explore: 'Commencer maintenant',
     hero_products: 'Voir les produits',
-    search_placeholder: 'Rechercher un modèle ou un identifier (ex: iPhone16,2)',
+    search_placeholder: 'Rechercher un modèle ou un identifiant…',
+    search_placeholder_mobile: 'Rechercher…',
     view_title_default: 'Produits Apple',
     step_1_scope: 'Étape 1: ouvre un dossier produit',
     step_1_status: 'Étape 1: choisis une catégorie.',
@@ -80,16 +84,14 @@ const TRANSLATIONS = {
     seo_card_2_desc: 'Accède aussi aux firmwares iPadOS, macOS, watchOS et tvOS dans une navigation simple en dossiers successifs.',
     seo_card_3_title: 'IPSW et OTA officiels',
     seo_card_3_desc: 'Bascule en un clic entre IPSW et OTA, vérifie le statut de signature et lance le téléchargement direct.',
-    stat_firmwares: 'Firmwares',
-    stat_platforms: 'Plateformes',
-    stat_users: 'Utilisateurs',
   },
   en: {
     hero_title: 'Access the <span class="hero__title-gradient">perfect Apple firmware</span> in a few clicks.',
     hero_subtitle: 'Fluid navigation through successive folders, signature verification, and direct download of system files.',
     hero_explore: 'Start now',
     hero_products: 'See products',
-    search_placeholder: 'Search for a model or identifier (ex: iPhone16,2)',
+    search_placeholder: 'Search a model or identifier…',
+    search_placeholder_mobile: 'Search…',
     view_title_default: 'Apple Products',
     step_1_scope: 'Step 1: open a product folder',
     step_1_status: 'Step 1: choose a category.',
@@ -120,9 +122,6 @@ const TRANSLATIONS = {
     seo_card_2_desc: 'Also access iPadOS, macOS, watchOS, and tvOS firmwares in a simple successive folder navigation.',
     seo_card_3_title: 'Official IPSW and OTA',
     seo_card_3_desc: 'Switch between IPSW and OTA in one click, check signature status, and start direct download.',
-    stat_firmwares: 'Firmwares',
-    stat_platforms: 'Platforms',
-    stat_users: 'Users',
   },
 };
 
@@ -161,6 +160,7 @@ async function init() {
   applyInitialLanguage();
   applyInitialQueryFromUrl();
   bindEvents();
+  window.matchMedia("(max-width: 480px)").addEventListener("change", applyTranslations);
   renderFamilySkeleton();
   await loadDevices();
 }
@@ -175,7 +175,7 @@ function bindEvents() {
 
   themeToggleBtn.addEventListener("click", () => {
     const nextTheme = state.theme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
+    setTheme(nextTheme, { animate: true });
   });
   
   if (backBtn) {
@@ -321,17 +321,6 @@ function bindEvents() {
       }
     });
   });
-
-  // Animate Hero stats count-up on load
-  setTimeout(() => {
-    const fwStat = document.getElementById("fwStatNumber");
-    const platStat = document.getElementById("platStatNumber");
-    const userStat = document.getElementById("userStatNumber");
-    
-    if (fwStat) animateCount(fwStat, 500, "+");
-    if (platStat) animateCount(platStat, 8, "");
-    if (userStat) animateCount(userStat, 10, "K+");
-  }, 400);
 
   familyGallery.addEventListener("click", (event) => {
     const card = event.target.closest(".family-card");
@@ -600,7 +589,9 @@ function applyTranslations() {
     if (!dict[key]) return;
 
     if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
-      el.placeholder = dict[key];
+      const compactSearch = key === "search_placeholder" && window.matchMedia("(max-width: 480px)").matches;
+      el.placeholder = compactSearch ? dict.search_placeholder_mobile : dict[key];
+      if (key === "search_placeholder") el.setAttribute("aria-label", dict[key]);
     } else if (el.classList.contains("hero__title")) {
       el.innerHTML = dict[key];
     } else {
@@ -622,6 +613,9 @@ function renderFamilyGallery() {
   familyGallery.innerHTML = FAMILY_ORDER.map((family, index) => {
     const meta = FAMILY_META[family];
     const count = counts[family] || 0;
+    const modelLabel = state.lang === "en"
+      ? (count === 1 ? "model" : "models")
+      : (count === 1 ? "modèle" : "modèles");
     const imageMarkup = meta.image
       ? `<img class="family-card__image" src="${meta.image}" alt="${escapeHtml(meta.label)}" loading="lazy" onerror="this.onerror=null;this.src='';this.classList.add('hidden');">`
       : '<div class="family-card__fallback">+</div>';
@@ -632,9 +626,12 @@ function renderFamilyGallery() {
       data-family="${family}"
       style="animation-delay:${Math.min(index * 24, 220)}ms; --sibling-index:${index + 1};"
     >
+      <span class="family-card__open" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+      </span>
       <div class="family-card__media">${imageMarkup}</div>
       <span class="family-card__label">${escapeHtml(meta.label)}</span>
-      <span class="family-card__count">${count} modeles</span>
+      <span class="family-card__count">${count} ${modelLabel}</span>
     </button>`;
   }).join("");
 }
@@ -818,15 +815,56 @@ function applyInitialTheme() {
   setTheme(theme);
 }
 
-function setTheme(theme) {
-  state.theme = theme === "dark" ? "dark" : "light";
-  // Set on both <html> and <body> for FOUC prevention and CSS compatibility
-  document.documentElement.setAttribute("data-theme", state.theme);
-  document.body.setAttribute("data-theme", state.theme);
+function setTheme(theme, { animate = false } = {}) {
+  const nextTheme = theme === "dark" ? "dark" : "light";
+  const changeId = ++themeChangeId;
+  state.theme = nextTheme;
+  if (themeTransition) themeTransition.skipTransition();
+
+  const root = document.documentElement;
+  const applyTheme = () => {
+    // Ignore an older callback if the user toggles again before the snapshot finishes.
+    if (changeId !== themeChangeId) return;
+    root.setAttribute("data-theme", nextTheme);
+    document.body.setAttribute("data-theme", nextTheme);
+    try {
+      localStorage.setItem("ipsw-theme", nextTheme);
+    } catch {
+      // Theme switching still works when storage is unavailable.
+    }
+  };
+  const finish = () => {
+    if (changeId !== themeChangeId) return;
+    root.classList.remove("theme-changing");
+    themeTransition = null;
+  };
+
+  if (!animate) {
+    applyTheme();
+    finish();
+    return;
+  }
+
+  // Paint the new palette once; crossfade snapshots instead of repainting every card.
+  root.classList.add("theme-changing");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reducedMotion || document.hidden || typeof document.startViewTransition !== "function") {
+    applyTheme();
+    if (document.hidden) finish();
+    else requestAnimationFrame(() => requestAnimationFrame(finish));
+    return;
+  }
+
   try {
-    localStorage.setItem("ipsw-theme", state.theme);
+    themeTransition = document.startViewTransition(applyTheme);
+    themeTransition.ready.catch(() => {});
+    themeTransition.finished.then(finish, () => {
+      applyTheme();
+      finish();
+    });
   } catch {
-    // no-op
+    applyTheme();
+    requestAnimationFrame(() => requestAnimationFrame(finish));
   }
 }
 
@@ -927,24 +965,4 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
-}
-
-function animateCount(el, target, suffix = "", duration = 1500) {
-  const stepTime = 30;
-  const steps = duration / stepTime;
-  let currentStep = 0;
-
-  const timer = setInterval(() => {
-    currentStep++;
-    const progress = Math.min(currentStep / steps, 1);
-    const easeProgress = progress * (2 - progress);
-    const current = Math.floor(easeProgress * target);
-
-    el.textContent = current + suffix;
-
-    if (progress >= 1) {
-      clearInterval(timer);
-      el.textContent = target + suffix;
-    }
-  }, stepTime);
 }
