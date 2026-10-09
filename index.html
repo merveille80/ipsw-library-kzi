@@ -105,7 +105,7 @@
       }
     </script>
   <link rel="stylesheet" href="./styles.css?v=1.1.0" />
-  <link rel="stylesheet" href="./design-polish.css?v=1.2.18" />
+  <link rel="stylesheet" href="./design-polish.css?v=1.2.22" />
   <!-- Inline theme init: apply before render to prevent FOUC -->
   <script>
     (function() {
@@ -248,23 +248,6 @@
           </button>
         </div>
 
-        <div class="hero__stats">
-          <div class="hero__stat">
-            <span class="hero__stat-number" id="fwStatNumber">0</span>
-            <span class="hero__stat-label" data-i18n="stat_firmwares">Firmwares</span>
-          </div>
-          <div class="hero__stat-divider"></div>
-          <div class="hero__stat">
-            <span class="hero__stat-number" id="platStatNumber">0</span>
-            <span class="hero__stat-label" data-i18n="stat_platforms">Plateformes</span>
-          </div>
-          <div class="hero__stat-divider"></div>
-          <div class="hero__stat">
-            <span class="hero__stat-number" id="userStatNumber">0K+</span>
-            <span class="hero__stat-label" data-i18n="stat_users">Utilisateurs</span>
-          </div>
-        </div>
-
         <div class="controls">
           <label class="search">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -384,9 +367,11 @@
             <div class="tcard__overlay" aria-hidden="true"></div>
           </div>
           <div class="tcard__body">
-            <p class="tcard__quote">"Firmware Library a rendu la recherche et le téléchargement de firmwares Apple incroyablement simple."</p>
-            <p class="tcard__name">— Jean-Marc K.</p>
-            <p class="tcard__role">Développeur iOS</p>
+            <blockquote class="tcard__quote">Firmware Library a rendu la recherche et le téléchargement de firmwares Apple incroyablement simple.</blockquote>
+            <div class="tcard__author">
+              <p class="tcard__name">Jean-Marc K.</p>
+              <p class="tcard__role">Développeur iOS</p>
+            </div>
           </div>
         </article>
 
@@ -396,9 +381,11 @@
             <div class="tcard__overlay" aria-hidden="true"></div>
           </div>
           <div class="tcard__body">
-            <p class="tcard__quote">"Je trouve tous les firmwares en quelques secondes. Interface propre, rapide, parfaite."</p>
-            <p class="tcard__name">— Alex T.</p>
-            <p class="tcard__role">Technicien Apple</p>
+            <blockquote class="tcard__quote">Je trouve tous les firmwares en quelques secondes. Interface propre, rapide, parfaite.</blockquote>
+            <div class="tcard__author">
+              <p class="tcard__name">Alex T.</p>
+              <p class="tcard__role">Technicien Apple</p>
+            </div>
           </div>
         </article>
 
@@ -408,9 +395,11 @@
             <div class="tcard__overlay" aria-hidden="true"></div>
           </div>
           <div class="tcard__body">
-            <p class="tcard__quote">"La vérification de signature en temps réel est un atout majeur. Je ne cherche plus ailleurs."</p>
-            <p class="tcard__name">— Sarah M.</p>
-            <p class="tcard__role">Ingénieure Système</p>
+            <blockquote class="tcard__quote">La vérification de signature en temps réel est un atout majeur. Je ne cherche plus ailleurs.</blockquote>
+            <div class="tcard__author">
+              <p class="tcard__name">Sarah M.</p>
+              <p class="tcard__role">Ingénieure Système</p>
+            </div>
           </div>
         </article>
 
@@ -460,7 +449,7 @@
     </div>
   </footer>
 
-  <script src="./app.js?v=1.2.2"></script>
+  <script src="./app.js?v=1.2.6"></script>
 </body>
 
 </html>

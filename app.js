@@ -84,9 +84,6 @@ const TRANSLATIONS = {
     seo_card_2_desc: 'Accède aussi aux firmwares iPadOS, macOS, watchOS et tvOS dans une navigation simple en dossiers successifs.',
     seo_card_3_title: 'IPSW et OTA officiels',
     seo_card_3_desc: 'Bascule en un clic entre IPSW et OTA, vérifie le statut de signature et lance le téléchargement direct.',
-    stat_firmwares: 'Firmwares',
-    stat_platforms: 'Plateformes',
-    stat_users: 'Utilisateurs',
   },
   en: {
     hero_title: 'Access the <span class="hero__title-gradient">perfect Apple firmware</span> in a few clicks.',
@@ -125,9 +122,6 @@ const TRANSLATIONS = {
     seo_card_2_desc: 'Also access iPadOS, macOS, watchOS, and tvOS firmwares in a simple successive folder navigation.',
     seo_card_3_title: 'Official IPSW and OTA',
     seo_card_3_desc: 'Switch between IPSW and OTA in one click, check signature status, and start direct download.',
-    stat_firmwares: 'Firmwares',
-    stat_platforms: 'Platforms',
-    stat_users: 'Users',
   },
 };
 
@@ -166,7 +160,6 @@ async function init() {
   applyInitialLanguage();
   applyInitialQueryFromUrl();
   bindEvents();
-  bindCardLighting();
   window.matchMedia("(max-width: 480px)").addEventListener("change", applyTranslations);
   renderFamilySkeleton();
   await loadDevices();
@@ -328,17 +321,6 @@ function bindEvents() {
       }
     });
   });
-
-  // Animate Hero stats count-up on load
-  setTimeout(() => {
-    const fwStat = document.getElementById("fwStatNumber");
-    const platStat = document.getElementById("platStatNumber");
-    const userStat = document.getElementById("userStatNumber");
-    
-    if (fwStat) animateCount(fwStat, 500, "+");
-    if (platStat) animateCount(platStat, 8, "");
-    if (userStat) animateCount(userStat, 10, "K+");
-  }, 400);
 
   familyGallery.addEventListener("click", (event) => {
     const card = event.target.closest(".family-card");
@@ -983,48 +965,4 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
-}
-
-function animateCount(el, target, suffix = "", duration = 1500) {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    el.textContent = target + suffix;
-    return;
-  }
-  const stepTime = 30;
-  const steps = duration / stepTime;
-  let currentStep = 0;
-
-  const timer = setInterval(() => {
-    currentStep++;
-    const progress = Math.min(currentStep / steps, 1);
-    const easeProgress = progress * (2 - progress);
-    const current = Math.floor(easeProgress * target);
-
-    el.textContent = current + suffix;
-
-    if (progress >= 1) {
-      clearInterval(timer);
-      el.textContent = target + suffix;
-    }
-  }, stepTime);
-}
-
-// Subtle pointer light, contained within the existing cards.
-function bindCardLighting() {
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  [familyGallery, deviceGrid].forEach(grid => {
-    let frame = 0;
-    grid.addEventListener("pointermove", event => {
-      if (event.pointerType !== "mouse" || reducedMotion.matches) return;
-      const card = event.target.closest(".family-card, .device-card");
-      if (!card) return;
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const rect = card.getBoundingClientRect();
-        card.style.setProperty("--pointer-x", `${event.clientX - rect.left}px`);
-        card.style.setProperty("--pointer-y", `${event.clientY - rect.top}px`);
-      });
-    });
-    grid.addEventListener("pointerleave", () => cancelAnimationFrame(frame));
-  });
 }

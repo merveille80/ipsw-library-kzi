@@ -560,3 +560,137 @@ html.theme-changing *::after {
   ::view-transition-old(root),
   ::view-transition-new(root) { animation: none !important; }
 }
+
+/* Restrained visual treatment; preserve layout, typography and rounded controls. */
+:root, html[data-theme], html[data-theme] body, body[data-theme] {
+  --card-shadow: none;
+  --card-shadow-hover: none;
+  --hero-icon-bubble-shadow: none;
+  --polish-glint: transparent;
+}
+.bg-glow { display: none; }
+.hero::before { background: none; }
+.topbar {
+  background: var(--bg-primary);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 1px 0 var(--line);
+}
+.topbar__logo-mark { box-shadow: none; }
+.hero-side-icons, .hero-side-icons__item { animation: none; }
+.hero-side-icons__item {
+  background: var(--surface);
+  backdrop-filter: none;
+  box-shadow: none;
+}
+.hero-side-icons__item img { filter: none; }
+.social-proof { box-shadow: 0 0 0 1px var(--line); }
+.social-proof:hover .social-proof__avatar { transform: none; }
+.hero-mini-product, html[data-theme] .hero-mini-product { box-shadow: none; }
+.hero-mini-product:hover {
+  transform: none;
+  border-color: var(--line);
+  background: var(--surface-strong);
+  box-shadow: none;
+}
+.hero-btn--primary {
+  background: var(--blue);
+  box-shadow: none;
+}
+.hero-btn--primary:hover {
+  background: #0064cb;
+  box-shadow: none;
+}
+.hero-btn--secondary, .hero-btn--secondary:hover { box-shadow: none; }
+.hero__scroll-indicator { animation: none; box-shadow: none; }
+.hero__scroll-indicator:hover { box-shadow: none; }
+.search, .search:hover { box-shadow: none; }
+.search:focus-within,
+html[data-theme="dark"] .search:focus-within {
+  box-shadow: 0 0 0 2px var(--line);
+}
+.type-toggle { box-shadow: none; }
+.type-toggle::before { box-shadow: inset 0 0 0 1px var(--line); }
+.custom-select__options { box-shadow: 0 4px 12px rgba(0, 0, 0, .08); }
+.family-card, .device-card,
+#explorerPanel .family-card {
+  background: var(--surface);
+  box-shadow: none;
+}
+.family-card:hover, .device-card:hover,
+#explorerPanel .family-card:hover {
+  transform: none;
+  translate: none;
+  scale: 1;
+  background: var(--surface-strong);
+  box-shadow: none;
+}
+.family-card:active, .device-card:active,
+#explorerPanel .family-card:active { translate: none; scale: 1; }
+.family-card__media::before { display: none; }
+.family-card__image, #explorerPanel .family-card__image { filter: none; }
+.family-card:hover .family-card__image {
+  transform: scale(var(--device-scale, 1));
+}
+.device-card.is-selected { box-shadow: none; }
+.load-more, .load-more:hover,
+.download-link, .download-link:hover,
+.toggle-rows, .toggle-rows:hover { box-shadow: none; }
+.badge--signed::before { animation: none; box-shadow: none; }
+.tcard, .tcard:hover { box-shadow: 0 0 0 1px var(--line); transform: none; }
+.tcard:hover .tcard__media img { transform: none; }
+.seo-copy__card, .seo-copy__card:hover { box-shadow: none; transform: none; }
+.reveal { animation: none; opacity: 1; transform: none; }
+
+.device-card__img { filter: none; }
+.device-card:hover .device-card__img { transform: none; }
+.custom-select__options {
+  background: var(--surface);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+th { backdrop-filter: none; }
+
+/* Give quotes room to read, and keep all author details on a shared baseline. */
+.tcard { display: flex; flex-direction: column; }
+.tcard__media { flex-shrink: 0; }
+.tcard__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 22px;
+  padding: 24px;
+  font-family: "Manrope", var(--font-sans);
+}
+.tcard__quote {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: .9375rem;
+  font-weight: 400;
+  line-height: 1.75;
+  letter-spacing: -.01em;
+  text-wrap: pretty;
+}
+.tcard__author {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+.tcard__name {
+  margin: 0;
+  font-size: .8125rem;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: -.01em;
+}
+.tcard__role {
+  margin: 4px 0 0;
+  font-size: .75rem;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+@media (max-width: 480px) {
+  .tcard__body { padding: 20px; gap: 18px; }
+}
