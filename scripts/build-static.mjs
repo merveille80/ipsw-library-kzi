@@ -4,7 +4,7 @@ import path from "node:path";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const output = path.join(root, "dist");
-const files = ["index.html", "app.js", "styles.css", "design-polish.css", "favicon.svg", "robots.txt", "sitemap.xml"];
+const files = ["index.html", "app.js", "styles.css", "design-polish.css", "hanging-testimonials.css", "hanging-testimonials.js", "favicon.svg", "robots.txt", "sitemap.xml"];
 const assetExtensions = new Set([".webp", ".jpg", ".jpeg", ".png", ".svg", ".woff2", ".ttf", ".txt"]);
 
 try {
