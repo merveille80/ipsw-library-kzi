@@ -39,7 +39,7 @@ const state = {
   selectedDetails: null,
   visibleDevices: INITIAL_VISIBLE_DEVICES,
   showAllFirmwares: false,
-  theme: "light",
+  theme: "dark",
   lang: "fr",
 };
 
@@ -853,16 +853,14 @@ function updateThemeControl() {
 }
 
 function applyInitialTheme() {
-  let theme = "light";
+  let theme = "dark";
   try {
     const stored = localStorage.getItem("ipsw-theme");
     if (stored === "dark" || stored === "light") {
       theme = stored;
-    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      theme = "dark";
     }
   } catch {
-    theme = "light";
+    theme = "dark";
   }
   setTheme(theme);
 }

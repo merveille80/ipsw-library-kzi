@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
@@ -114,9 +114,7 @@
     (function() {
       try {
         var stored = localStorage.getItem('ipsw-theme');
-        var theme = (stored === 'dark' || stored === 'light')
-          ? stored
-          : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        var theme = (stored === 'dark' || stored === 'light') ? stored : 'dark';
         document.documentElement.setAttribute('data-theme', theme);
       } catch(e) {}
     })();
@@ -151,7 +149,7 @@
         <option value="fr">Français</option>
         <option value="en">English</option>
       </select>
-      <button id="themeToggleBtn" class="theme-toggle" type="button" role="switch" aria-checked="false" aria-label="Mode sombre">
+      <button id="themeToggleBtn" class="theme-toggle" type="button" role="switch" aria-checked="true" aria-label="Mode sombre">
         <span class="theme-toggle__track">
           <span class="theme-toggle__thumb">
             <!-- Sun icon (light mode) -->
@@ -497,7 +495,7 @@
     </div>
   </footer>
 
-  <script src="./app.js?v=1.2.8"></script>
+  <script src="./app.js?v=1.2.9"></script>
   <script src="./hanging-testimonials.js?v=1.0.0"></script>
 </body>
 
