@@ -39,9 +39,12 @@ const state = {
   selectedDetails: null,
   visibleDevices: INITIAL_VISIBLE_DEVICES,
   showAllFirmwares: false,
-  theme: "light",
+  theme: "dark",
   lang: "fr",
 };
+
+let themeTransition = null;
+let themeChangeId = 0;
 
 const TRANSLATIONS = {
   fr: {
@@ -49,7 +52,8 @@ const TRANSLATIONS = {
     hero_subtitle: 'Navigation fluide par dossiers successifs, vérification de signature et téléchargement direct des fichiers système.',
     hero_explore: 'Commencer maintenant',
     hero_products: 'Voir les produits',
-    search_placeholder: 'Rechercher un modèle ou un identifier (ex: iPhone16,2)',
+    search_placeholder: 'Rechercher un modèle ou un identifiant…',
+    search_placeholder_mobile: 'Rechercher…',
     view_title_default: 'Produits Apple',
     step_1_scope: 'Étape 1: ouvre un dossier produit',
     step_1_status: 'Étape 1: choisis une catégorie.',
@@ -80,16 +84,14 @@ const TRANSLATIONS = {
     seo_card_2_desc: 'Accède aussi aux firmwares iPadOS, macOS, watchOS et tvOS dans une navigation simple en dossiers successifs.',
     seo_card_3_title: 'IPSW et OTA officiels',
     seo_card_3_desc: 'Bascule en un clic entre IPSW et OTA, vérifie le statut de signature et lance le téléchargement direct.',
-    stat_firmwares: 'Firmwares',
-    stat_platforms: 'Plateformes',
-    stat_users: 'Utilisateurs',
   },
   en: {
     hero_title: 'Access the <span class="hero__title-gradient">perfect Apple firmware</span> in a few clicks.',
     hero_subtitle: 'Fluid navigation through successive folders, signature verification, and direct download of system files.',
     hero_explore: 'Start now',
     hero_products: 'See products',
-    search_placeholder: 'Search for a model or identifier (ex: iPhone16,2)',
+    search_placeholder: 'Search a model or identifier…',
+    search_placeholder_mobile: 'Search…',
     view_title_default: 'Apple Products',
     step_1_scope: 'Step 1: open a product folder',
     step_1_status: 'Step 1: choose a category.',
@@ -120,9 +122,6 @@ const TRANSLATIONS = {
     seo_card_2_desc: 'Also access iPadOS, macOS, watchOS, and tvOS firmwares in a simple successive folder navigation.',
     seo_card_3_title: 'Official IPSW and OTA',
     seo_card_3_desc: 'Switch between IPSW and OTA in one click, check signature status, and start direct download.',
-    stat_firmwares: 'Firmwares',
-    stat_platforms: 'Platforms',
-    stat_users: 'Users',
   },
 };
 
@@ -161,6 +160,7 @@ async function init() {
   applyInitialLanguage();
   applyInitialQueryFromUrl();
   bindEvents();
+  window.matchMedia("(max-width: 480px)").addEventListener("change", applyTranslations);
   renderFamilySkeleton();
   await loadDevices();
 }
@@ -175,7 +175,7 @@ function bindEvents() {
 
   themeToggleBtn.addEventListener("click", () => {
     const nextTheme = state.theme === "dark" ? "light" : "dark";
-    setTheme(nextTheme);
+    setTheme(nextTheme, { animate: true });
   });
   
   if (backBtn) {
@@ -266,35 +266,8 @@ function bindEvents() {
     });
   }
 
-  // Custom Language Select Dropdown
   const langDropdown = document.getElementById("langDropdown");
-  if (langDropdown) {
-    const trigger = langDropdown.querySelector(".custom-select__trigger");
-    const options = langDropdown.querySelectorAll(".custom-select__option");
-
-    trigger.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const isExpanded = trigger.getAttribute("aria-expanded") === "true";
-      trigger.setAttribute("aria-expanded", !isExpanded);
-      langDropdown.classList.toggle("is-open");
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!langDropdown.contains(e.target)) {
-        trigger.setAttribute("aria-expanded", "false");
-        langDropdown.classList.remove("is-open");
-      }
-    });
-
-    options.forEach((opt) => {
-      opt.addEventListener("click", () => {
-        const val = opt.dataset.value;
-        setLanguage(val);
-        trigger.setAttribute("aria-expanded", "false");
-        langDropdown.classList.remove("is-open");
-      });
-    });
-  }
+  if (langDropdown) bindLanguageDropdown(langDropdown);
 
   // Scroll indicator click scroll
   const scrollIndicator = document.getElementById("scrollIndicator");
@@ -321,17 +294,6 @@ function bindEvents() {
       }
     });
   });
-
-  // Animate Hero stats count-up on load
-  setTimeout(() => {
-    const fwStat = document.getElementById("fwStatNumber");
-    const platStat = document.getElementById("platStatNumber");
-    const userStat = document.getElementById("userStatNumber");
-    
-    if (fwStat) animateCount(fwStat, 500, "+");
-    if (platStat) animateCount(platStat, 8, "");
-    if (userStat) animateCount(userStat, 10, "K+");
-  }, 400);
 
   familyGallery.addEventListener("click", (event) => {
     const card = event.target.closest(".family-card");
@@ -386,6 +348,67 @@ function goToHome({ scrollTarget = "explorer" } = {}) {
   }
 
   explorerPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function bindLanguageDropdown(dropdown) {
+  const trigger = dropdown.querySelector(".custom-select__trigger");
+  const options = Array.from(dropdown.querySelectorAll(".custom-select__option"));
+  const isOpen = () => trigger.getAttribute("aria-expanded") === "true";
+  const close = (restoreFocus = false) => {
+    trigger.setAttribute("aria-expanded", "false");
+    dropdown.classList.remove("is-open");
+    if (restoreFocus) trigger.focus();
+  };
+  const open = () => {
+    trigger.setAttribute("aria-expanded", "true");
+    dropdown.classList.add("is-open");
+  };
+
+  trigger.addEventListener("click", () => {
+    if (isOpen()) close();
+    else open();
+  });
+  trigger.addEventListener("keydown", event => {
+    if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+    event.preventDefault();
+    event.stopPropagation();
+    open();
+    const selected = options.find(option => option.getAttribute("aria-selected") === "true");
+    (selected || options[event.key === "ArrowDown" ? 0 : options.length - 1])?.focus();
+  });
+  dropdown.addEventListener("keydown", event => {
+    if (!isOpen()) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      close(true);
+      return;
+    }
+    if (event.key === "Tab") {
+      close();
+      return;
+    }
+    const index = options.indexOf(document.activeElement);
+    if (index < 0) return;
+    let next = index;
+    if (event.key === "ArrowDown") next = (index + 1) % options.length;
+    else if (event.key === "ArrowUp") next = (index - 1 + options.length) % options.length;
+    else if (event.key === "Home") next = 0;
+    else if (event.key === "End") next = options.length - 1;
+    else if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      options[index].click();
+      return;
+    } else return;
+    event.preventDefault();
+    options[next].focus();
+  });
+  document.addEventListener("click", event => {
+    if (!dropdown.contains(event.target)) close();
+  });
+  options.forEach(option => option.addEventListener("click", () => {
+    setLanguage(option.dataset.value);
+    close(true);
+  }));
 }
 
 async function loadDevices() {
@@ -541,6 +564,13 @@ function updateNavigation() {
     dot.classList.remove("is-active", "is-done");
     if (dotStep === step) dot.classList.add("is-active");
     else if (dotStep < step) dot.classList.add("is-done");
+    dot.disabled = dotStep >= step;
+    const labels = state.lang === "en"
+      ? ["Step 1: Product", "Step 2: Model", "Step 3: Firmware"]
+      : ["Étape 1 : produit", "Étape 2 : modèle", "Étape 3 : firmware"];
+    dot.setAttribute("aria-label", labels[i]);
+    if (dotStep === step) dot.setAttribute("aria-current", "step");
+    else dot.removeAttribute("aria-current");
   });
 
   lines.forEach((line, i) => {
@@ -591,6 +621,7 @@ function setLanguage(lang) {
     // no-op
   }
   applyTranslations();
+  updateNavigation();
 }
 
 function applyTranslations() {
@@ -600,13 +631,19 @@ function applyTranslations() {
     if (!dict[key]) return;
 
     if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
-      el.placeholder = dict[key];
+      el.placeholder = key === "search_placeholder" ? "" : dict[key];
+      if (key === "search_placeholder") el.setAttribute("aria-label", dict[key]);
     } else if (el.classList.contains("hero__title")) {
       el.innerHTML = dict[key];
     } else {
       el.textContent = dict[key];
     }
   });
+  updateThemeControl();
+  const langTrigger = document.querySelector(".custom-select__trigger");
+  if (langTrigger) langTrigger.setAttribute("aria-label", state.lang === "en" ? "Choose language" : "Choisir la langue");
+  const languageOptions = document.getElementById("languageOptions");
+  if (languageOptions) languageOptions.setAttribute("aria-label", state.lang === "en" ? "Language" : "Langue");
 }
 
 function renderFamilySkeleton() {
@@ -622,8 +659,11 @@ function renderFamilyGallery() {
   familyGallery.innerHTML = FAMILY_ORDER.map((family, index) => {
     const meta = FAMILY_META[family];
     const count = counts[family] || 0;
+    const modelLabel = state.lang === "en"
+      ? (count === 1 ? "model" : "models")
+      : (count === 1 ? "modèle" : "modèles");
     const imageMarkup = meta.image
-      ? `<img class="family-card__image" src="${meta.image}" alt="${escapeHtml(meta.label)}" loading="lazy" onerror="this.onerror=null;this.src='';this.classList.add('hidden');">`
+      ? `<img class="family-card__image" src="${meta.image}" alt="${escapeHtml(meta.label)}" loading="lazy" onerror="this.remove()">`
       : '<div class="family-card__fallback">+</div>';
 
     return `<button
@@ -632,9 +672,12 @@ function renderFamilyGallery() {
       data-family="${family}"
       style="animation-delay:${Math.min(index * 24, 220)}ms; --sibling-index:${index + 1};"
     >
+      <span class="family-card__open" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>
+      </span>
       <div class="family-card__media">${imageMarkup}</div>
       <span class="family-card__label">${escapeHtml(meta.label)}</span>
-      <span class="family-card__count">${count} modeles</span>
+      <span class="family-card__count">${count} ${modelLabel}</span>
     </button>`;
   }).join("");
 }
@@ -799,34 +842,80 @@ function updateTypeToggle() {
   typeButtons.forEach((btn) => {
     const active = btn.dataset.type === state.firmwareType;
     btn.classList.toggle("is-active", active);
-    btn.setAttribute("aria-selected", active ? "true" : "false");
+    btn.setAttribute("aria-pressed", active ? "true" : "false");
   });
 }
 
+function updateThemeControl() {
+  if (!themeToggleBtn) return;
+  themeToggleBtn.setAttribute("aria-checked", state.theme === "dark" ? "true" : "false");
+  themeToggleBtn.setAttribute("aria-label", state.lang === "en" ? "Dark mode" : "Mode sombre");
+}
+
 function applyInitialTheme() {
-  let theme = "light";
+  let theme = "dark";
   try {
     const stored = localStorage.getItem("ipsw-theme");
     if (stored === "dark" || stored === "light") {
       theme = stored;
-    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      theme = "dark";
     }
   } catch {
-    theme = "light";
+    theme = "dark";
   }
   setTheme(theme);
 }
 
-function setTheme(theme) {
-  state.theme = theme === "dark" ? "dark" : "light";
-  // Set on both <html> and <body> for FOUC prevention and CSS compatibility
-  document.documentElement.setAttribute("data-theme", state.theme);
-  document.body.setAttribute("data-theme", state.theme);
+function setTheme(theme, { animate = false } = {}) {
+  const nextTheme = theme === "dark" ? "dark" : "light";
+  const changeId = ++themeChangeId;
+  state.theme = nextTheme;
+  if (themeTransition) themeTransition.skipTransition();
+
+  const root = document.documentElement;
+  const applyTheme = () => {
+    // Ignore an older callback if the user toggles again before the snapshot finishes.
+    if (changeId !== themeChangeId) return;
+    root.setAttribute("data-theme", nextTheme);
+    document.body.setAttribute("data-theme", nextTheme);
+    updateThemeControl();
+    try {
+      localStorage.setItem("ipsw-theme", nextTheme);
+    } catch {
+      // Theme switching still works when storage is unavailable.
+    }
+  };
+  const finish = () => {
+    if (changeId !== themeChangeId) return;
+    root.classList.remove("theme-changing");
+    themeTransition = null;
+  };
+
+  if (!animate) {
+    applyTheme();
+    finish();
+    return;
+  }
+
+  // Paint the new palette once; crossfade snapshots instead of repainting every card.
+  root.classList.add("theme-changing");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reducedMotion || document.hidden || typeof document.startViewTransition !== "function") {
+    applyTheme();
+    if (document.hidden) finish();
+    else requestAnimationFrame(() => requestAnimationFrame(finish));
+    return;
+  }
+
   try {
-    localStorage.setItem("ipsw-theme", state.theme);
+    themeTransition = document.startViewTransition(applyTheme);
+    themeTransition.ready.catch(() => {});
+    themeTransition.finished.then(finish, () => {
+      applyTheme();
+      finish();
+    });
   } catch {
-    // no-op
+    applyTheme();
+    requestAnimationFrame(() => requestAnimationFrame(finish));
   }
 }
 
@@ -927,24 +1016,4 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
-}
-
-function animateCount(el, target, suffix = "", duration = 1500) {
-  const stepTime = 30;
-  const steps = duration / stepTime;
-  let currentStep = 0;
-
-  const timer = setInterval(() => {
-    currentStep++;
-    const progress = Math.min(currentStep / steps, 1);
-    const easeProgress = progress * (2 - progress);
-    const current = Math.floor(easeProgress * target);
-
-    el.textContent = current + suffix;
-
-    if (progress >= 1) {
-      clearInterval(timer);
-      el.textContent = target + suffix;
-    }
-  }, stepTime);
 }

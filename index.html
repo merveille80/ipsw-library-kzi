@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 
 <head>
   <meta charset="UTF-8" />
@@ -104,15 +104,17 @@
         ]
       }
     </script>
-  <link rel="stylesheet" href="./styles.css?v=1.0.5" />
+  <link rel="stylesheet" href="./styles.css?v=1.1.1" />
+  <link rel="preload" href="./assets/fonts/manrope-variable.ttf" as="font" type="font/ttf" crossorigin />
+  <link rel="preload" href="./assets/fonts/inter-variable.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="./design-polish.css?v=1.2.26" />
+  <link rel="stylesheet" href="./hanging-testimonials.css?v=1.0.2" />
   <!-- Inline theme init: apply before render to prevent FOUC -->
   <script>
     (function() {
       try {
         var stored = localStorage.getItem('ipsw-theme');
-        var theme = (stored === 'dark' || stored === 'light')
-          ? stored
-          : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        var theme = (stored === 'dark' || stored === 'light') ? stored : 'dark';
         document.documentElement.setAttribute('data-theme', theme);
       } catch(e) {}
     })();
@@ -120,9 +122,6 @@
 </head>
 
 <body>
-  <div class="bg-glow bg-glow--1" aria-hidden="true"></div>
-  <div class="bg-glow bg-glow--2" aria-hidden="true"></div>
-  <div class="bg-glow bg-glow--3" aria-hidden="true"></div>
   <header class="topbar">
     <a id="homeBrandBtn" class="topbar__brand topbar__brand-btn" href="./" aria-label="Retourner a l'accueil">
       <span class="topbar__logo-mark">
@@ -135,22 +134,22 @@
     </a>
     <div class="topbar__actions">
       <div class="custom-select" id="langDropdown">
-        <button class="custom-select__trigger" type="button" aria-expanded="false" aria-haspopup="listbox" aria-label="Choisir la langue">
+        <button class="custom-select__trigger" type="button" aria-expanded="false" aria-haspopup="listbox" aria-controls="languageOptions" aria-label="Choisir la langue">
           <span class="custom-select__label">Français</span>
           <svg class="custom-select__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="m6 9 6 6 6-6"/>
           </svg>
         </button>
-        <ul class="custom-select__options" role="listbox">
-          <li class="custom-select__option is-selected" data-value="fr" role="option" aria-selected="true">Français</li>
-          <li class="custom-select__option" data-value="en" role="option" aria-selected="false">English</li>
+        <ul id="languageOptions" class="custom-select__options" role="listbox" aria-label="Langue">
+          <li class="custom-select__option is-selected" data-value="fr" role="option" tabindex="-1" aria-selected="true">Français</li>
+          <li class="custom-select__option" data-value="en" role="option" tabindex="-1" aria-selected="false">English</li>
         </ul>
       </div>
       <select id="langSelect" class="hidden" aria-hidden="true">
         <option value="fr">Français</option>
         <option value="en">English</option>
       </select>
-      <button id="themeToggleBtn" class="theme-toggle" type="button" aria-label="Changer le theme">
+      <button id="themeToggleBtn" class="theme-toggle" type="button" role="switch" aria-checked="true" aria-label="Mode sombre">
         <span class="theme-toggle__track">
           <span class="theme-toggle__thumb">
             <!-- Sun icon (light mode) -->
@@ -202,10 +201,6 @@
         <h1 class="hero__title" data-i18n="hero_title">
           Accede au <span class="hero__title-gradient">firmware Apple parfait</span> en quelques clics.
         </h1>
-        <p class="hero__subtitle" data-i18n="hero_subtitle">
-          Navigation fluide par dossiers successifs, verification de signature et telechargement
-          direct des fichiers systeme.
-        </p>
 
         <div id="heroQuickProducts" class="hero__mini-products">
           <button class="hero-mini-product" type="button" data-family="iphone">
@@ -251,23 +246,6 @@
           </button>
         </div>
 
-        <div class="hero__stats">
-          <div class="hero__stat">
-            <span class="hero__stat-number" id="fwStatNumber">0</span>
-            <span class="hero__stat-label" data-i18n="stat_firmwares">Firmwares</span>
-          </div>
-          <div class="hero__stat-divider"></div>
-          <div class="hero__stat">
-            <span class="hero__stat-number" id="platStatNumber">0</span>
-            <span class="hero__stat-label" data-i18n="stat_platforms">Plateformes</span>
-          </div>
-          <div class="hero__stat-divider"></div>
-          <div class="hero__stat">
-            <span class="hero__stat-number" id="userStatNumber">0K+</span>
-            <span class="hero__stat-label" data-i18n="stat_users">Utilisateurs</span>
-          </div>
-        </div>
-
         <div class="controls">
           <label class="search">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -276,14 +254,14 @@
               <path d="m21 21-4.3-4.3"></path>
             </svg>
             <input id="searchInput" type="search" data-i18n="search_placeholder"
-              placeholder="Rechercher un modele ou un identifier (ex: iPhone16,2)" autocomplete="off" />
+              placeholder="" aria-label="Rechercher un modèle ou un identifiant" autocomplete="off" />
           </label>
 
-          <div class="type-toggle" role="tablist" aria-label="Firmware type">
-            <button class="type-toggle__btn is-active" data-type="ipsw" aria-selected="true">
+          <div class="type-toggle" role="group" aria-label="Format du firmware">
+            <button class="type-toggle__btn is-active" type="button" data-type="ipsw" aria-pressed="true">
               IPSW
             </button>
-            <button class="type-toggle__btn" data-type="ota" aria-selected="false">OTA</button>
+            <button class="type-toggle__btn" type="button" data-type="ota" aria-pressed="false">OTA</button>
           </div>
         </div>
       </div>
@@ -311,11 +289,11 @@
         </div>
         <div class="panel__head__right">
           <nav class="steps-nav" aria-label="Étapes de navigation">
-            <span class="step-dot" id="stepDot1" data-step="1" aria-label="Étape 1: Catégorie"></span>
+            <button class="step-dot" type="button" aria-current="step" id="stepDot1" data-step="1" aria-label="Étape 1: Catégorie" disabled></button>
             <span class="step-line"></span>
-            <span class="step-dot" id="stepDot2" data-step="2" aria-label="Étape 2: Modèle"></span>
+            <button class="step-dot" type="button" id="stepDot2" data-step="2" aria-label="Étape 2: Modèle" disabled></button>
             <span class="step-line"></span>
-            <span class="step-dot" id="stepDot3" data-step="3" aria-label="Étape 3: Firmware"></span>
+            <button class="step-dot" type="button" id="stepDot3" data-step="3" aria-label="Étape 3: Firmware" disabled></button>
           </nav>
           <p id="deviceCount" data-i18n="loading">Chargement...</p>
         </div>
@@ -375,48 +353,102 @@
       </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="testimonials reveal" aria-label="Témoignages utilisateurs">
-      <h2 class="testimonials__title">Ce que disent nos utilisateurs</h2>
-      <p class="testimonials__sub">Des milliers de développeurs et techniciens font confiance à Firmware Library.</p>
-      <div class="testimonials__grid">
+    <!-- Suspended testimonial cards; readable in full without JavaScript. -->
+    <section id="testimonials" class="testimonials hanging-testimonials reveal" aria-labelledby="testimonialsTitle">
+      <div class="hanging-testimonials__head">
+        <h2 id="testimonialsTitle" class="testimonials__title">Ce que disent<br>nos utilisateurs.</h2>
+        <p class="testimonials__sub">Des milliers de développeurs et techniciens font confiance à Firmware Library.</p>
+      </div>
+      <p id="hangingHelp" class="hanging-testimonials__hint"><span class="hanging-help-desktop">Fais bouger une carte. Clique pour lire l’avis.</span><span class="hanging-help-mobile">Fais défiler les cartes. Touche pour lire l’avis.</span></p>
+      <div class="hanging-gallery" role="region" aria-label="Les trois témoignages" tabindex="0">
+        <div class="hanging-gallery__track">
+          <svg class="hanging-gallery__wire" viewBox="0 0 1000 40" preserveAspectRatio="none" aria-hidden="true"><path d="M 0 6 Q 500 46 1000 6" /></svg>
 
-        <article class="tcard">
-          <div class="tcard__media">
-            <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=600" alt="John Doe" />
-            <div class="tcard__overlay" aria-hidden="true"></div>
-          </div>
-          <div class="tcard__body">
-            <p class="tcard__quote">"Firmware Library a rendu la recherche et le téléchargement de firmwares Apple incroyablement simple."</p>
-            <p class="tcard__name">— Jean-Marc K.</p>
-            <p class="tcard__role">Développeur iOS</p>
-          </div>
-        </article>
+          <article class="hanging-card hanging-card--1" data-person="Jean-Marc K." aria-label="Témoignage de Jean-Marc K.">
+            <span class="hanging-card__pin" aria-hidden="true"></span>
+            <div class="hanging-card__pendulum">
+              <span class="hanging-card__string" aria-hidden="true"></span>
+              <div class="hanging-card__badge">
+                <span class="hanging-card__clip" aria-hidden="true"></span>
+                <div class="hanging-card__flipper">
+                  <div class="hanging-card__face hanging-card__front">
+                    <div class="hanging-card__eyebrow"><span>Firmware Library</span><span>01</span></div>
+                    <div class="hanging-card__portrait"><img src="assets/portraits/portrait-150-billi.jpg" alt="Portrait photographique d’illustration — homme souriant" width="900" height="1416" loading="lazy" decoding="async"></div>
+                    <div class="hanging-card__identity"><h3>Jean-Marc K.</h3><p>Développeur iOS</p></div>
+                    <div class="hanging-card__action" aria-hidden="true"><span>Lire son avis</span><span class="hanging-card__arrow">↗</span></div>
+                  </div>
+                  <div id="review-jean-marc" class="hanging-card__face hanging-card__back">
+                    <div class="hanging-card__eyebrow"><span>Son expérience</span><span>01</span></div>
+                    <div class="hanging-card__identity">
+                      <img class="hanging-card__avatar" src="assets/portraits/portrait-150-billi.jpg" alt="" width="40" height="40" loading="lazy" decoding="async">
+                      <div><h3>Jean-Marc K.</h3><p>Développeur iOS</p></div>
+                    </div>
+                    <blockquote>Firmware Library a rendu la recherche et le téléchargement de firmwares Apple incroyablement simple.</blockquote>
+                    <div class="hanging-card__action" aria-hidden="true"><span>Revenir au portrait</span><span class="hanging-card__arrow">↶</span></div>
+                  </div>
+                </div>
+                <button class="hanging-card__toggle" type="button" aria-label="Lire l’avis de Jean-Marc K." aria-expanded="false" aria-controls="review-jean-marc" aria-describedby="hangingHelp"></button>
+              </div>
+            </div>
+          </article>
 
-        <article class="tcard">
-          <div class="tcard__media">
-            <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=600" alt="Alex" />
-            <div class="tcard__overlay" aria-hidden="true"></div>
-          </div>
-          <div class="tcard__body">
-            <p class="tcard__quote">"Je trouve tous les firmwares en quelques secondes. Interface propre, rapide, parfaite."</p>
-            <p class="tcard__name">— Alex T.</p>
-            <p class="tcard__role">Technicien Apple</p>
-          </div>
-        </article>
+          <article class="hanging-card hanging-card--2" data-person="Alex T." aria-label="Témoignage de Alex T.">
+            <span class="hanging-card__pin" aria-hidden="true"></span>
+            <div class="hanging-card__pendulum">
+              <span class="hanging-card__string" aria-hidden="true"></span>
+              <div class="hanging-card__badge">
+                <span class="hanging-card__clip" aria-hidden="true"></span>
+                <div class="hanging-card__flipper">
+                  <div class="hanging-card__face hanging-card__front">
+                    <div class="hanging-card__eyebrow"><span>Firmware Library</span><span>02</span></div>
+                    <div class="hanging-card__portrait"><img src="assets/portraits/portrait-hongwei-fan.jpg" alt="Portrait photographique d’illustration — homme en extérieur" width="900" height="600" loading="lazy" decoding="async"></div>
+                    <div class="hanging-card__identity"><h3>Alex T.</h3><p>Technicien Apple</p></div>
+                    <div class="hanging-card__action" aria-hidden="true"><span>Lire son avis</span><span class="hanging-card__arrow">↗</span></div>
+                  </div>
+                  <div id="review-alex" class="hanging-card__face hanging-card__back">
+                    <div class="hanging-card__eyebrow"><span>Son expérience</span><span>02</span></div>
+                    <div class="hanging-card__identity">
+                      <img class="hanging-card__avatar" src="assets/portraits/portrait-hongwei-fan.jpg" alt="" width="40" height="40" loading="lazy" decoding="async">
+                      <div><h3>Alex T.</h3><p>Technicien Apple</p></div>
+                    </div>
+                    <blockquote>Je trouve tous les firmwares en quelques secondes. Interface propre, rapide, parfaite.</blockquote>
+                    <div class="hanging-card__action" aria-hidden="true"><span>Revenir au portrait</span><span class="hanging-card__arrow">↶</span></div>
+                  </div>
+                </div>
+                <button class="hanging-card__toggle" type="button" aria-label="Lire l’avis de Alex T." aria-expanded="false" aria-controls="review-alex" aria-describedby="hangingHelp"></button>
+              </div>
+            </div>
+          </article>
 
-        <article class="tcard">
-          <div class="tcard__media">
-            <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=600&h=600&auto=format&fit=crop" alt="Sarah" />
-            <div class="tcard__overlay" aria-hidden="true"></div>
-          </div>
-          <div class="tcard__body">
-            <p class="tcard__quote">"La vérification de signature en temps réel est un atout majeur. Je ne cherche plus ailleurs."</p>
-            <p class="tcard__name">— Sarah M.</p>
-            <p class="tcard__role">Ingénieure Système</p>
-          </div>
-        </article>
+          <article class="hanging-card hanging-card--3" data-person="Sarah M." aria-label="Témoignage de Sarah M.">
+            <span class="hanging-card__pin" aria-hidden="true"></span>
+            <div class="hanging-card__pendulum">
+              <span class="hanging-card__string" aria-hidden="true"></span>
+              <div class="hanging-card__badge">
+                <span class="hanging-card__clip" aria-hidden="true"></span>
+                <div class="hanging-card__flipper">
+                  <div class="hanging-card__face hanging-card__front">
+                    <div class="hanging-card__eyebrow"><span>Firmware Library</span><span>03</span></div>
+                    <div class="hanging-card__portrait"><img src="assets/portraits/portrait-blake-cheek.jpg" alt="Portrait photographique d’illustration — femme souriante" width="900" height="1350" loading="lazy" decoding="async"></div>
+                    <div class="hanging-card__identity"><h3>Sarah M.</h3><p>Ingénieure Système</p></div>
+                    <div class="hanging-card__action" aria-hidden="true"><span>Lire son avis</span><span class="hanging-card__arrow">↗</span></div>
+                  </div>
+                  <div id="review-sarah" class="hanging-card__face hanging-card__back">
+                    <div class="hanging-card__eyebrow"><span>Son expérience</span><span>03</span></div>
+                    <div class="hanging-card__identity">
+                      <img class="hanging-card__avatar" src="assets/portraits/portrait-blake-cheek.jpg" alt="" width="40" height="40" loading="lazy" decoding="async">
+                      <div><h3>Sarah M.</h3><p>Ingénieure Système</p></div>
+                    </div>
+                    <blockquote>La vérification de signature en temps réel est un atout majeur. Je ne cherche plus ailleurs.</blockquote>
+                    <div class="hanging-card__action" aria-hidden="true"><span>Revenir au portrait</span><span class="hanging-card__arrow">↶</span></div>
+                  </div>
+                </div>
+                <button class="hanging-card__toggle" type="button" aria-label="Lire l’avis de Sarah M." aria-expanded="false" aria-controls="review-sarah" aria-describedby="hangingHelp"></button>
+              </div>
+            </div>
+          </article>
 
+        </div>
       </div>
     </section>
 
@@ -459,16 +491,12 @@
         <span class="dot" style="width:8px;height:8px;"></span>
         <span class="site-footer__brand-name">Firmware Library</span>
       </div>
-      <nav class="site-footer__links" aria-label="Liens footer">
-        <a href="https://api.ipsw.me" target="_blank" rel="noreferrer">API IPSW.me</a>
-        <a href="https://ipsw.me" target="_blank" rel="noreferrer">IPSW.me</a>
-        <a href="https://appledb.dev" target="_blank" rel="noreferrer">AppleDB</a>
-      </nav>
       <p class="site-footer__copy">&copy; 2026 Merveille Tambwe &middot; Cyberspace Sarl</p>
     </div>
   </footer>
 
-  <script src="./app.js?v=1.0.5"></script>
+  <script src="./app.js?v=1.2.9"></script>
+  <script src="./hanging-testimonials.js?v=1.0.0"></script>
 </body>
 
 </html>
